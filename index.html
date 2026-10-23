@@ -9,14 +9,21 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Gamja+Flower&family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
+        @font-face {
+            font-family: 'NostalgicMyoeunHeullim';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-1@1.0/Griun_MyoeunHeullim-Rg.woff2') format('woff2');
+            font-weight: normal;
+            font-display: swap;
+        }
         * {
-            font-family: 'Gaegu', 'Gamja Flower', cursive, sans-serif !important;
+            font-family: 'NostalgicMyoeunHeullim', 'Gaegu', 'Gamja Flower', cursive, sans-serif !important;
         }
         select, option, input, button {
-            font-family: 'Gaegu', 'Gamja Flower', cursive, sans-serif !important;
+            font-family: 'NostalgicMyoeunHeullim', 'Gaegu', 'Gamja Flower', cursive, sans-serif !important;
         }
-        .font-gaegu { font-family: 'Gaegu', cursive !important; }
-        .font-gamja { font-family: 'Gamja Flower', cursive !important; }
+        .font-gaegu, .font-gamja { font-family: 'NostalgicMyoeunHeullim', 'Gaegu', 'Gamja Flower', cursive, sans-serif !important; }
+        /* 아이콘 폰트는 덮어쓰지 않도록 유지 */
+        .fa-solid, .fas { font-family: 'Font Awesome 6 Free' !important; }
     </style>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
