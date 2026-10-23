@@ -45,7 +45,7 @@
                 📝 심리 테스트
             </button>
             <button id="navCompatBtn" onclick="switchTab('compat')" class="px-5 py-2 rounded-full font-bold text-base sm:text-lg transition-all duration-300 text-pink-700 hover:bg-pink-200">
-                💕 1:1 궁합
+                💕 정밀 1:1 사주 궁합
             </button>
         </nav>
     </header>
@@ -122,19 +122,46 @@
         <!-- 3. Compatibility Section -->
         <section id="compatSection" class="hidden bg-white/90 backdrop-blur rounded-3xl p-6 shadow-xl border-2 border-purple-200 mb-8">
             <h2 class="text-2xl sm:text-3xl font-bold text-purple-600 font-gaegu mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-heart text-purple-400"></i> 캐릭터 1:1 궁합 테스트
+                <i class="fa-solid fa-heart text-purple-400"></i> 상대방 생년월일시 정밀 사주 궁합
             </h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-                <div>
-                    <label class="block text-sm font-bold text-gray-600 mb-1">캐릭터 A</label>
-                    <select id="compatChar1" onchange="runCompatibilityCheck()" class="w-full p-2.5 rounded-xl border border-purple-200 font-bold text-base bg-purple-50"></select>
+            
+            <form onsubmit="calculateSajuCompat(event)" class="space-y-4 mb-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-purple-50 p-4 rounded-2xl border border-purple-100">
+                    <!-- Person A (내 사주/상대) -->
+                    <div>
+                        <h3 class="font-extrabold text-purple-700 text-lg mb-2">👤 내 생년월일</h3>
+                        <div class="grid grid-cols-3 gap-1.5 mb-2">
+                            <select id="compatYear1" class="p-2 rounded-xl border border-purple-200 text-sm font-bold bg-white"></select>
+                            <select id="compatMonth1" class="p-2 rounded-xl border border-purple-200 text-sm font-bold bg-white"></select>
+                            <select id="compatDay1" class="p-2 rounded-xl border border-purple-200 text-sm font-bold bg-white"></select>
+                        </div>
+                        <div class="flex gap-3 text-xs font-bold text-gray-600 mb-2">
+                            <label><input type="radio" name="compatCal1" value="solar" checked class="accent-purple-500"> 양력</label>
+                            <label><input type="radio" name="compatCal1" value="lunar" class="accent-purple-500"> 음력</label>
+                        </div>
+                    </div>
+
+                    <!-- Person B (상대방 사주) -->
+                    <div>
+                        <h3 class="font-extrabold text-purple-700 text-lg mb-2">❤️ 상대방 생년월일</h3>
+                        <div class="grid grid-cols-3 gap-1.5 mb-2">
+                            <select id="compatYear2" class="p-2 rounded-xl border border-purple-200 text-sm font-bold bg-white"></select>
+                            <select id="compatMonth2" class="p-2 rounded-xl border border-purple-200 text-sm font-bold bg-white"></select>
+                            <select id="compatDay2" class="p-2 rounded-xl border border-purple-200 text-sm font-bold bg-white"></select>
+                        </div>
+                        <div class="flex gap-3 text-xs font-bold text-gray-600 mb-2">
+                            <label><input type="radio" name="compatCal2" value="solar" checked class="accent-purple-500"> 양력</label>
+                            <label><input type="radio" name="compatCal2" value="lunar" class="accent-purple-500"> 음력</label>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-sm font-bold text-gray-600 mb-1">캐릭터 B</label>
-                    <select id="compatChar2" onchange="runCompatibilityCheck()" class="w-full p-2.5 rounded-xl border border-purple-200 font-bold text-base bg-purple-50"></select>
-                </div>
-            </div>
-            <div id="compatResultDisplay" class="p-4 bg-purple-50/50 rounded-2xl border border-purple-200"></div>
+
+                <button type="submit" class="w-full py-3 bg-purple-500 hover:bg-purple-600 text-white font-extrabold rounded-2xl shadow-md transition-all text-xl font-gaegu">
+                    ✨ 두 사람의 사주 & 캐릭터 궁합 분석하기 ✨
+                </button>
+            </form>
+
+            <div id="compatResultDisplay" class="p-4 bg-purple-50/50 rounded-2xl border border-purple-200 hidden"></div>
         </section>
 
         <!-- Result Display Section -->
@@ -499,408 +526,203 @@
         ];
 
         /* ==========================================================================
-           2. POPULATE DROPDOWNS FOR BIRTHDATE (ERR-FREE SELECTION)
+           6. PRECISION SAJU COMPATIBILITY (합/충/파/원진 & 조후 분석)
            ========================================================================== */
-        function initDateDropdowns() {
-            const yearSelect = document.getElementById('birthYear');
-            const monthSelect = document.getElementById('birthMonth');
-            const daySelect = document.getElementById('birthDay');
+        
+        // 천간합, 지지합, 충, 원진, 파 정의
+        const STEM_COMBINATIONS = {
+            '甲己': '갑기합(甲己合 - 중정지합)', '乙庚': '을경합(乙庚合 - 인의지합)',
+            '丙辛': '병신합(丙辛合 - 위엄지합)', '丁壬': '정임합(丁壬合 - 인수지합)',
+            '戊癸': '무계합(戊癸合 - 무정한합)'
+        };
 
-            if (!yearSelect || !monthSelect || !daySelect) return;
+        const BRANCH_COMBINATIONS = {
+            '子丑': '자축토(子丑土)', '寅亥': '인해목(寅亥木)', '卯戌': '묘술화(卯戌火)',
+            '辰酉': '진유금(辰酉金)', '巳申': '사신수(巳申水)', '午未': '오미토(午未土)'
+        };
 
-            // Populate Years (1950 ~ 2026)
-            yearSelect.innerHTML = '';
-            for (let y = 2026; y >= 1950; y--) {
-                const opt = document.createElement('option');
-                opt.value = y;
-                opt.textContent = `${y}년`;
-                if (y === 2000) opt.selected = true;
-                yearSelect.appendChild(opt);
-            }
+        const BRANCH_CLASHES = {
+            '子午': '자오충(子午沖 - 감정과 건강의 부딪힘)', '丑未': '축미충(丑未沖 - 재물과 환경 변화)',
+            '寅申': '인신충(寅申沖 - 행동과 이동의 다툼)', '卯酉': '묘유충(卯酉沖 - 인간관계 및 직관 갈등)',
+            '辰戌': '진술충(辰戌沖 - 고집과 주관의 충돌)', '巳亥': '사해충(巳亥沖 - 마음과 생각의 마찰)'
+        };
 
-            // Populate Months (1 ~ 12)
-            monthSelect.innerHTML = '';
-            for (let m = 1; m <= 12; m++) {
-                const opt = document.createElement('option');
-                opt.value = m;
-                opt.textContent = `${m}월`;
-                monthSelect.appendChild(opt);
-            }
+        const BRANCH_WONJIN = {
+            '子未': '자미 원진(子未 怨嗔 - 원망과 집착)', '丑午': '축오 원진(丑午 怨嗔 - 오해와 불만)',
+            '寅酉': '인유 원진(寅酉 怨嗔 - 자존심 대립)', '卯申': '묘신 원진(卯申 怨嗔 - 이유 없는 서운함)',
+            '辰亥': '진해 원진(辰亥 怨嗔 - 서운한 감정 이끌림)', '巳戌': '사술 원진(巳戌 怨嗔 - 예민함과 마찰)'
+        };
 
-            // Function to dynamically update Days based on Year & Month
-            function updateDays() {
-                const selectedYear = parseInt(yearSelect.value) || 2000;
-                const selectedMonth = parseInt(monthSelect.value) || 1;
-                const currentDayVal = parseInt(daySelect.value) || 1;
+        function initCompatDropdowns() {
+            const y1 = document.getElementById('compatYear1');
+            const m1 = document.getElementById('compatMonth1');
+            const d1 = document.getElementById('compatDay1');
+            const y2 = document.getElementById('compatYear2');
+            const m2 = document.getElementById('compatMonth2');
+            const d2 = document.getElementById('compatDay2');
 
-                // Get max days in selected month
-                const maxDays = new Date(selectedYear, selectedMonth, 0).getDate();
+            if (!y1 || !y2) return;
 
-                daySelect.innerHTML = '';
+            [y1, y2].forEach(ySelect => {
+                ySelect.innerHTML = '';
+                for (let y = 2026; y >= 1950; y--) {
+                    const opt = document.createElement('option');
+                    opt.value = y;
+                    opt.textContent = `${y}년`;
+                    if (y === 2000) opt.selected = true;
+                    ySelect.appendChild(opt);
+                }
+            });
+
+            [m1, m2].forEach(mSelect => {
+                mSelect.innerHTML = '';
+                for (let m = 1; m <= 12; m++) {
+                    const opt = document.createElement('option');
+                    opt.value = m;
+                    opt.textContent = `${m}월`;
+                    mSelect.appendChild(opt);
+                }
+            });
+
+            function populateDays(ySel, mSel, dSel) {
+                const year = parseInt(ySel.value) || 2000;
+                const month = parseInt(mSel.value) || 1;
+                const maxDays = new Date(year, month, 0).getDate();
+
+                dSel.innerHTML = '';
                 for (let d = 1; d <= maxDays; d++) {
                     const opt = document.createElement('option');
                     opt.value = d;
                     opt.textContent = `${d}일`;
-                    if (d === Math.min(currentDayVal, maxDays)) opt.selected = true;
-                    daySelect.appendChild(opt);
+                    dSel.appendChild(opt);
                 }
             }
 
-            yearSelect.addEventListener('change', updateDays);
-            monthSelect.addEventListener('change', updateDays);
-            updateDays();
+            y1.addEventListener('change', () => populateDays(y1, m1, d1));
+            m1.addEventListener('change', () => populateDays(y1, m1, d1));
+            y2.addEventListener('change', () => populateDays(y2, m2, d2));
+            m2.addEventListener('change', () => populateDays(y2, m2, d2));
+
+            populateDays(y1, m1, d1);
+            populateDays(y2, m2, d2);
         }
 
-        /* ==========================================================================
-           3. PRECISION SAJU CALCULATION ENGINE
-           ========================================================================== */
-        
-        function calculateSaju(e) {
+        function calculateSajuCompat(e) {
             e.preventDefault();
 
-            const y = parseInt(document.getElementById('birthYear').value);
-            const m = parseInt(document.getElementById('birthMonth').value);
-            const d = parseInt(document.getElementById('birthDay').value);
-            const h = parseInt(document.getElementById('birthHour').value);
-            const calType = document.querySelector('input[name="calendarType"]:checked').value;
+            const parseDate = (yId, mId, dId, calName) => {
+                const y = parseInt(document.getElementById(yId).value);
+                const m = parseInt(document.getElementById(mId).value);
+                const d = parseInt(document.getElementById(dId).value);
+                const isLunar = document.querySelector(`input[name="${calName}"]:checked`).value === 'lunar';
 
-            try {
-                let solar;
-                if (calType === 'lunar') {
-                    const hourVal = (h === -1) ? 12 : h;
-                    const lunar = Lunar.fromYmdHms(y, m, d, hourVal, 0, 0);
-                    solar = lunar.getSolar();
-                } else {
-                    const hourVal = (h === -1) ? 12 : h;
-                    solar = Solar.fromYmdHms(y, m, d, hourVal, 0, 0);
-                }
+                let solar = isLunar 
+                    ? Lunar.fromYmdHms(y, m, d, 12, 0, 0).getSolar() 
+                    : Solar.fromYmdHms(y, m, d, 12, 0, 0);
 
-                const lunarObj = solar.getLunar();
-                const eightChar = lunarObj.getEightChar();
-
-                const yearGanZhi = eightChar.getYear();
-                const monthGanZhi = eightChar.getMonth();
-                const dayGanZhi = eightChar.getDay();
-                const timeGanZhi = (h === -1) ? '미정' : eightChar.getTime();
-
-                // 오행 점수 초기화
-                const scores = { wood: 0, fire: 0, earth: 0, metal: 0, water: 0 };
-
-                // 1. 천간 점수 계산 (기본 10점, 월간 20점 보정)
-                const gans = [
-                    { gan: yearGanZhi.charAt(0), weight: 10 },
-                    { gan: monthGanZhi.charAt(0), weight: 20 },
-                    { gan: dayGanZhi.charAt(0), weight: 10 },
-                    { gan: (h !== -1) ? timeGanZhi.charAt(0) : '', weight: 10 }
-                ];
-
-                gans.forEach(g => {
-                    if (g.gan && STEM_ELEMENTS[g.gan]) {
-                        scores[STEM_ELEMENTS[g.gan]] += g.weight;
-                    }
-                });
-
-                // 2. 지지 및 지장간 점수 계산
-                const zhis = [
-                    { zhi: yearGanZhi.charAt(1), weightMultiplier: 1.0 },
-                    { zhi: monthGanZhi.charAt(1), weightMultiplier: 2.0 },
-                    { zhi: dayGanZhi.charAt(1), weightMultiplier: 1.0 },
-                    { zhi: (h !== -1) ? timeGanZhi.charAt(1) : '', weightMultiplier: 1.0 }
-                ];
-
-                zhis.forEach(z => {
-                    if (z.zhi && BRANCH_HIDDEN_STEMS[z.zhi]) {
-                        const hiddenStems = BRANCH_HIDDEN_STEMS[z.zhi];
-                        const baseZhiScore = 15 * z.weightMultiplier;
-
-                        hiddenStems.forEach(hs => {
-                            const elem = STEM_ELEMENTS[hs.stem];
-                            if (elem) {
-                                scores[elem] += baseZhiScore * hs.ratio;
-                            }
-                        });
-                    }
-                });
-
-                // 3. 지지합 보정
-                const monthBranch = monthGanZhi.charAt(1);
-                if (monthBranch === '亥') {
-                    scores.water += 15;
-                }
-
-                const pillars = {
-                    year: yearGanZhi,
-                    month: monthGanZhi,
-                    day: dayGanZhi,
-                    hour: timeGanZhi,
-                    dayMaster: dayGanZhi.charAt(0)
+                const eight = solar.getLunar().getEightChar();
+                return {
+                    dayStem: eight.getDay().charAt(0),
+                    dayBranch: eight.getDay().charAt(1),
+                    monthBranch: eight.getMonth().charAt(1),
+                    yearBranch: eight.getYear().charAt(1),
+                    dayGanzhi: eight.getDay()
                 };
-
-                renderResults(scores, pillars);
-
-            } catch (err) {
-                console.error(err);
-                alert("만세력 계산 중 오류가 발생했습니다. 생년월일을 확인해주세요.");
-            }
-        }
-
-        /* ==========================================================================
-           4. RESULT RENDER LOGIC
-           ========================================================================== */
-        function renderResults(scores, pillars = null) {
-            const total = Object.values(scores).reduce((a, b) => a + b, 0) || 1;
-
-            // 1. Four Pillars UI & Heavenly Stem / Main Element Summary
-            const pillarsBox = document.getElementById('pillarsContainer');
-            if (pillars) {
-                pillarsBox.classList.remove('hidden');
-                document.getElementById('pillarYear').innerText = pillars.year;
-                document.getElementById('pillarMonth').innerText = pillars.month;
-                document.getElementById('pillarDay').innerText = pillars.day;
-                document.getElementById('pillarHour').innerText = pillars.hour;
-
-                const dayStem = pillars.dayMaster;
-                document.getElementById('summaryDayMaster').innerText = `${dayStem} (${STEM_NAMES[dayStem] || dayStem})`;
-                document.getElementById('summaryDayMasterDesc').innerText = `나를 대표하는 핵심 일간(日干)`;
-            } else {
-                pillarsBox.classList.add('hidden');
-                document.getElementById('summaryDayMaster').innerText = '심리 테스트 모드';
-                document.getElementById('summaryDayMasterDesc').innerText = '설문 답변 기반 성향 분석';
-            }
-
-            // 2. Element Progress Bars & Calculate Dominant Element
-            const barContainer = document.getElementById('elemBars');
-            barContainer.innerHTML = '';
-
-            let maxElem = 'water';
-            let maxScore = -1;
-
-            Object.keys(ELEM_INFO).forEach(key => {
-                const sc = Math.round(scores[key] * 10) / 10;
-                const pct = Math.round((sc / total) * 100);
-
-                if (sc > maxScore) {
-                    maxScore = sc;
-                    maxElem = key;
-                }
-
-                const info = ELEM_INFO[key];
-                barContainer.innerHTML += `
-                    <div>
-                        <div class="flex justify-between text-xs sm:text-sm font-bold mb-1">
-                            <span class="text-gray-700">${info.name}</span>
-                            <span class="text-gray-500">${sc}점 (${pct}%)</span>
-                        </div>
-                        <div class="w-full bg-gray-200 h-3 rounded-full overflow-hidden">
-                            <div class="${info.bg} h-full rounded-full transition-all duration-1000" style="width: ${pct}%"></div>
-                        </div>
-                    </div>
-                `;
-            });
-
-            document.getElementById('dominantElemBadge').innerText = `최고 강세: ${ELEM_INFO[maxElem].name}`;
-            document.getElementById('summaryDominantElem').innerText = `${ELEM_INFO[maxElem].name}`;
-            document.getElementById('summaryDominantElemDesc').innerText = `${ELEM_INFO[maxElem].desc}`;
-
-            // Saju Explanation Note
-            const noteBox = document.getElementById('sajuNoteBox');
-            if (pillars) {
-                noteBox.classList.remove('hidden');
-                noteBox.innerHTML = `
-                    💡 <strong>명리 분석 리포트:</strong> 내 일간은 <strong>${pillars.dayMaster}</strong>이며, 월지 <strong>${pillars.month.charAt(1)}</strong>의 계절 기운과 지장간 세부 분석 결과, <strong>${ELEM_INFO[maxElem].name}</strong> 기운이 가장 강하게 형성되었습니다.
-                `;
-            } else {
-                noteBox.classList.add('hidden');
-            }
-
-            // 3. Match Character
-            let matchedChar = matchCharacter(maxElem, scores, pillars ? pillars.dayMaster : null);
-
-            // 4. Render Character Card with Error-Fallback for Images
-            const card = document.getElementById('characterCard');
-            card.className = `text-center p-6 rounded-3xl bg-gradient-to-b ${matchedChar.bgGradient} border-2 mb-8 shadow-md relative overflow-hidden transition-all duration-500`;
-            
-            card.innerHTML = `
-                <div class="relative w-32 h-32 mx-auto mb-4">
-                    <div class="absolute inset-0 bg-white/80 rounded-full shadow-inner animate-pulse"></div>
-                    <img src="${matchedChar.img}" alt="${matchedChar.name}" class="w-24 h-24 absolute inset-0 m-auto object-contain drop-shadow-md hover:scale-110 transition-transform duration-300" onerror="this.onerror=null; this.src='https://placehold.co/120x120/f9a8d4/ffffff?text=${encodeURIComponent(matchedChar.name)}';">
-                </div>
-                <span class="inline-block px-3.5 py-1 bg-white/90 text-pink-700 text-sm font-extrabold rounded-full mb-2 shadow-sm border border-pink-200">
-                    ${matchedChar.sajuFeature}
-                </span>
-                <h3 class="text-3xl sm:text-4xl font-extrabold text-gray-800 font-gaegu flex items-center justify-center gap-1.5">
-                    <span>${matchedChar.name}</span>
-                    <span class="text-2xl">${matchedChar.icon}</span>
-                </h3>
-                <p class="text-base font-bold text-pink-600 mt-1">"${matchedChar.title}"</p>
-                
-                <div class="flex justify-center gap-1.5 flex-wrap my-3">
-                    ${matchedChar.traits.map(t => `<span class="px-2.5 py-0.5 bg-white border border-pink-200 text-pink-600 text-xs sm:text-sm font-bold rounded-lg shadow-sm">#${t}</span>`).join('')}
-                </div>
-
-                <p class="text-sm sm:text-base text-gray-700 leading-relaxed max-w-lg mx-auto bg-white/80 p-4 rounded-2xl border border-pink-100 text-left mt-3 shadow-sm">
-                    ${matchedChar.desc}
-                </p>
-            `;
-
-            // 5. Render Compatibility
-            document.getElementById('romanticBest').innerText = matchedChar.romanticBest;
-            document.getElementById('romanticWorst').innerText = matchedChar.romanticWorst;
-            document.getElementById('workBest').innerText = matchedChar.workBest;
-            document.getElementById('workWorst').innerText = matchedChar.workWorst;
-
-            const findCharByText = (text) => {
-                return Object.values(CHARACTERS).find(c => text.includes(c.name));
             };
 
-            const rBestChar = findCharByText(matchedChar.romanticBest);
-            const rWorstChar = findCharByText(matchedChar.romanticWorst);
-            const wBestChar = findCharByText(matchedChar.workBest);
-            const wWorstChar = findCharByText(matchedChar.workWorst);
+            const p1 = parseDate('compatYear1', 'compatMonth1', 'compatDay1', 'compatCal1');
+            const p2 = parseDate('compatYear2', 'compatMonth2', 'compatDay2', 'compatCal2');
 
-            if (rBestChar) {
-                document.getElementById('romanticBestImg').innerHTML = `<img src="${rBestChar.img}" alt="${rBestChar.name}" class="w-10 h-10 object-contain drop-shadow-sm" onerror="this.src='https://placehold.co/80x80/f9a8d4/ffffff?text=${encodeURIComponent(rBestChar.name)}'">`;
+            // 1. 캐릭터 매칭
+            const c1 = matchCharacter(STEM_ELEMENTS[p1.dayStem] || 'water', { water: 10, wood: 10, fire: 10, earth: 10, metal: 10 }, p1.dayStem);
+            const c2 = matchCharacter(STEM_ELEMENTS[p2.dayStem] || 'wood', { water: 10, wood: 10, fire: 10, earth: 10, metal: 10 }, p2.dayStem);
+
+            // 2. 점수 및 합/충/조후 분석
+            let score = 75;
+            let details = [];
+
+            // 천간합 (일간의 합)
+            const stemPair1 = p1.dayStem + p2.dayStem;
+            const stemPair2 = p2.dayStem + p1.dayStem;
+            if (STEM_COMBINATIONS[stemPair1] || STEM_COMBINATIONS[stemPair2]) {
+                score += 15;
+                details.push(`✨ <strong>천간합(${STEM_COMBINATIONS[stemPair1] || STEM_COMBINATIONS[stemPair2]})</strong>: 첫눈에 서로에게 강하게 끌리는 운명적 일간 결합입니다.`);
             }
-            if (rWorstChar) {
-                document.getElementById('romanticWorstImg').innerHTML = `<img src="${rWorstChar.img}" alt="${rWorstChar.name}" class="w-8 h-8 object-contain opacity-80" onerror="this.src='https://placehold.co/80x80/cccccc/ffffff?text=${encodeURIComponent(rWorstChar.name)}'">`;
+
+            // 지지합 (일지의 육합)
+            const branchPair1 = p1.dayBranch + p2.dayBranch;
+            const branchPair2 = p2.dayBranch + p1.dayBranch;
+            if (BRANCH_COMBINATIONS[branchPair1] || BRANCH_COMBINATIONS[branchPair2]) {
+                score += 12;
+                details.push(`💕 <strong>일지 육합(${BRANCH_COMBINATIONS[branchPair1] || BRANCH_COMBINATIONS[branchPair2]})</strong>: 속마음과 가치관이 잘 맞아서 함께 있으면 편안한 조합입니다.`);
             }
-            if (wBestChar) {
-                document.getElementById('workBestImg').innerHTML = `<img src="${wBestChar.img}" alt="${wBestChar.name}" class="w-10 h-10 object-contain drop-shadow-sm" onerror="this.src='https://placehold.co/80x80/f9a8d4/ffffff?text=${encodeURIComponent(wBestChar.name)}'">`;
+
+            // 충 (일지 충)
+            if (BRANCH_CLASHES[branchPair1] || BRANCH_CLASHES[branchPair2]) {
+                score -= 10;
+                details.push(`⚡ <strong>일지 충(${BRANCH_CLASHES[branchPair1] || BRANCH_CLASHES[branchPair2]})</strong>: 성향 차이로 종종 의견 충돌이 일어날 수 있으니 대화와 양보가 필요합니다.`);
             }
-            if (wWorstChar) {
-                document.getElementById('workWorstImg').innerHTML = `<img src="${wWorstChar.img}" alt="${wWorstChar.name}" class="w-8 h-8 object-contain opacity-80" onerror="this.src='https://placehold.co/80x80/cccccc/ffffff?text=${encodeURIComponent(wWorstChar.name)}'">`;
+
+            // 원진 (일지 원진)
+            if (BRANCH_WONJIN[branchPair1] || BRANCH_WONJIN[branchPair2]) {
+                score -= 8;
+                details.push(`🥀 <strong>원진살(${BRANCH_WONJIN[branchPair1] || BRANCH_WONJIN[branchPair2]})</strong>: 미운 정 고운 정이 함께 들어 서운함이 생기기 쉬우므로 솔직한 표현이 중요합니다.`);
             }
 
-            document.getElementById('resultSection').classList.remove('hidden');
-            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
-        }
+            // 조후 (온습도 조화 분석)
+            const coldMonths = ['亥', '子', '丑'];
+            const hotMonths = ['巳', '午', '未'];
 
-        function matchCharacter(dominantElem, scores, dayMaster) {
-            if (dominantElem === 'water') {
-                return CHARACTERS.hachiware;
-            } else if (dominantElem === 'fire') {
-                return (scores.earth > scores.wood) ? CHARACTERS.shisa : CHARACTERS.momonga;
-            } else if (dominantElem === 'wood') {
-                return (scores.water > scores.metal) ? CHARACTERS.usagi : CHARACTERS.kani;
-            } else if (dominantElem === 'metal') {
-                return CHARACTERS.rakko;
-            } else if (dominantElem === 'earth') {
-                return (scores.water > scores.fire) ? CHARACTERS.kurimanju : CHARACTERS.chiikawa;
+            if ((coldMonths.includes(p1.monthBranch) && hotMonths.includes(p2.monthBranch)) ||
+                (hotMonths.includes(p1.monthBranch) && coldMonths.includes(p2.monthBranch))) {
+                score += 10;
+                details.push(`🌡️ <strong>조후(調候)의 완벽한 상생</strong>: 한쪽은 차갑고 한쪽은 따뜻하여 서로의 사주 기운과 마음을 온화하게 조율해 줍니다.`);
+            } else if (coldMonths.includes(p1.monthBranch) && coldMonths.includes(p2.monthBranch)) {
+                details.push(`❄️ <strong>조후 한랭(寒冷)</strong>: 두 분 모두 차가운 계절 기운을 가졌으므로 따뜻한 다정함과 표현을 자주 건네면 좋습니다.`);
+            } else if (hotMonths.includes(p1.monthBranch) && hotMonths.includes(p2.monthBranch)) {
+                details.push(`🔥 <strong>조후 조열(燥熱)</strong>: 둘 다 열정이 넘치므로 다툼 시 잠시 냉각기를 가지는 지혜가 필요합니다.`);
             }
-            return CHARACTERS.hachiware;
-        }
 
-        /* ==========================================================================
-           5. QUIZ MODE LOGIC
-           ========================================================================== */
-        function initQuiz() {
-            const container = document.getElementById('quizContainer');
-            container.innerHTML = '';
+            score = Math.min(Math.max(score, 50), 99);
 
-            QUIZ_QUESTIONS.forEach((q, idx) => {
-                let optionsHTML = q.options.map((opt, oIdx) => `
-                    <label class="block cursor-pointer">
-                        <input type="radio" name="q_${idx}" value="${opt.elem}" class="peer hidden" ${oIdx===0?'checked':''}>
-                        <div class="p-3.5 rounded-2xl border-2 border-amber-100 peer-checked:border-amber-400 peer-checked:bg-amber-100/60 font-bold text-base sm:text-lg text-gray-700 hover:bg-amber-50 transition-all flex items-center gap-2">
-                            <span class="w-5 h-5 rounded-full border-2 border-amber-300 peer-checked:bg-amber-500 inline-block"></span>
-                            ${opt.txt}
-                        </div>
-                    </label>
-                `).join('');
-
-                container.innerHTML += `
-                    <div class="p-4 rounded-2xl bg-amber-50/40 border border-amber-200">
-                        <p class="font-bold text-gray-800 text-base sm:text-lg mb-3">${q.q}</p>
-                        <div class="space-y-2">${optionsHTML}</div>
-                    </div>
-                `;
-            });
-        }
-
-        function submitQuiz() {
-            const scores = { wood: 0, fire: 0, earth: 0, metal: 0, water: 0 };
-            
-            QUIZ_QUESTIONS.forEach((_, idx) => {
-                const checked = document.querySelector(`input[name="q_${idx}"]:checked`);
-                if (checked) {
-                    scores[checked.value] += 10;
-                }
-            });
-
-            renderResults(scores, null);
-        }
-
-        /* ==========================================================================
-           6. 1:1 COMPATIBILITY TOOL
-           ========================================================================== */
-        function initCompatTool() {
-            const select1 = document.getElementById('compatChar1');
-            const select2 = document.getElementById('compatChar2');
-
-            select1.innerHTML = '';
-            select2.innerHTML = '';
-
-            Object.values(CHARACTERS).forEach(c => {
-                select1.innerHTML += `<option value="${c.id}">${c.icon} ${c.name} (${c.title})</option>`;
-                select2.innerHTML += `<option value="${c.id}">${c.icon} ${c.name} (${c.title})</option>`;
-            });
-
-            select2.value = 'usagi';
-            runCompatibilityCheck();
-        }
-
-        function runCompatibilityCheck() {
-            const id1 = document.getElementById('compatChar1').value;
-            const id2 = document.getElementById('compatChar2').value;
-
-            const c1 = CHARACTERS[id1];
-            const c2 = CHARACTERS[id2];
-
+            // 결과 화면 렌더링
             const display = document.getElementById('compatResultDisplay');
-
-            if (id1 === id2) {
-                display.innerHTML = `
-                    <div class="text-center py-4">
-                        <img src="${c1.img}" class="w-16 h-16 mx-auto mb-2 object-contain" onerror="this.src='https://placehold.co/80x80/f9a8d4/ffffff?text=${encodeURIComponent(c1.name)}'">
-                        <h4 class="font-extrabold text-xl text-purple-700 mt-2 font-gaegu">${c1.name} X ${c2.name} (동일 인물 궁합)</h4>
-                        <p class="text-sm text-gray-600 mt-1">서로의 성향을 너무 잘 알아 호흡이 잘 맞거나, 반대로 같은 단점으로 부딪힐 수 있는 데칼코마니 궁합입니다!</p>
-                    </div>
-                `;
-                return;
-            }
-
-            let score = 88;
-            let relationText = "서로 도움을 주며 성장하는 찰떡궁합!";
-
-            if (
-                (c1.element === 'water' && c2.element === 'wood') || (c1.element === 'wood' && c2.element === 'water') ||
-                (c1.element === 'fire' && c2.element === 'earth') || (c1.element === 'earth' && c2.element === 'fire')
-            ) {
-                score = 98;
-                relationText = "🌊⚡ 오행 상생(相生)의 최고 시너지! 서로의 부족함을 보완해주는 최고의 케미입니다.";
-            }
+            display.classList.remove('hidden');
 
             display.innerHTML = `
-                <div class="flex items-center justify-center gap-6 text-center mb-4">
+                <div class="text-center mb-4">
+                    <span class="inline-block px-3 py-1 bg-purple-200 text-purple-800 rounded-full font-bold text-xs sm:text-sm mb-2">정밀 만세력 사주 궁합 리포트</span>
+                    <h3 class="text-3xl font-black text-purple-700 font-gaegu">${c1.name} X ${c2.name}</h3>
+                </div>
+
+                <div class="flex items-center justify-center gap-6 text-center mb-5">
                     <div class="flex flex-col items-center">
-                        <div class="w-16 h-16 rounded-full bg-white p-1 border-2 border-purple-200 shadow-sm mb-1 flex items-center justify-center overflow-hidden">
-                            <img src="${c1.img}" alt="${c1.name}" class="w-12 h-12 object-contain" onerror="this.src='https://placehold.co/80x80/f9a8d4/ffffff?text=${encodeURIComponent(c1.name)}'">
+                        <div class="w-20 h-20 rounded-full bg-white p-1 border-2 border-pink-300 shadow-md mb-1 flex items-center justify-center overflow-hidden">
+                            <img src="${c1.img}" alt="${c1.name}" class="w-16 h-16 object-contain" onerror="this.src='https://placehold.co/80x80/f9a8d4/ffffff?text=${encodeURIComponent(c1.name)}'">
                         </div>
                         <p class="font-extrabold text-base text-gray-800">${c1.name}</p>
+                        <span class="text-xs text-purple-600 font-bold">${p1.dayGanzhi}일주</span>
                     </div>
-                    <div class="text-pink-500 font-black text-2xl font-gaegu">VS</div>
+
+                    <div class="text-pink-500 font-black text-3xl font-gaegu flex flex-col items-center">
+                        <span>💕</span>
+                        <span class="text-2xl">${score}점</span>
+                    </div>
+
                     <div class="flex flex-col items-center">
-                        <div class="w-16 h-16 rounded-full bg-white p-1 border-2 border-purple-200 shadow-sm mb-1 flex items-center justify-center overflow-hidden">
-                            <img src="${c2.img}" alt="${c2.name}" class="w-12 h-12 object-contain" onerror="this.src='https://placehold.co/80x80/f9a8d4/ffffff?text=${encodeURIComponent(c2.name)}'">
+                        <div class="w-20 h-20 rounded-full bg-white p-1 border-2 border-purple-300 shadow-md mb-1 flex items-center justify-center overflow-hidden">
+                            <img src="${c2.img}" alt="${c2.name}" class="w-16 h-16 object-contain" onerror="this.src='https://placehold.co/80x80/f9a8d4/ffffff?text=${encodeURIComponent(c2.name)}'">
                         </div>
                         <p class="font-extrabold text-base text-gray-800">${c2.name}</p>
+                        <span class="text-xs text-purple-600 font-bold">${p2.dayGanzhi}일주</span>
                     </div>
                 </div>
 
-                <div class="text-center bg-purple-50 p-4 rounded-xl border border-purple-200 mb-4">
-                    <span class="text-xs sm:text-sm text-purple-600 font-bold block">궁합 지수</span>
-                    <span class="text-3xl sm:text-4xl font-black text-purple-700 font-gaegu">${score}점 / 100점</span>
-                    <p class="text-sm font-bold text-gray-700 mt-1">${relationText}</p>
+                <div class="bg-white p-4 rounded-2xl border border-purple-200 space-y-2 text-sm sm:text-base text-gray-700 leading-relaxed font-bold">
+                    <h4 class="text-base text-purple-800 border-b border-purple-100 pb-1 mb-2 flex items-center gap-1 font-gaegu text-xl">
+                        <i class="fa-solid fa-scroll text-purple-500"></i> 사주 상생 및 조후 분석 결과
+                    </h4>
+                    ${details.length > 0 ? details.map(d => `<p class="bg-purple-50/60 p-2.5 rounded-xl border border-purple-100">${d}</p>`).join('') : '<p class="bg-purple-50/60 p-2.5 rounded-xl">서로 평탄하고 안정적인 기운을 나누는 완만한 사주 조화입니다.</p>'}
                 </div>
             `;
         }
@@ -952,7 +774,7 @@
         window.onload = function() {
             initDateDropdowns();
             initQuiz();
-            initCompatTool();
+            initCompatDropdowns();
         };
     </script>
 </body>
