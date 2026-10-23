@@ -55,24 +55,25 @@
                     </label>
                 </div>
 
+                <!-- Dropdown Selectors for Year, Month, Day -->
                 <div class="grid grid-cols-3 gap-2">
                     <div>
                         <label class="block text-xs font-bold text-gray-600 mb-1">년도</label>
-                        <input type="number" id="birthYear" min="1950" max="2026" value="2000" class="w-full p-2.5 rounded-xl border border-pink-200 font-bold text-sm text-center focus:outline-pink-400" required>
+                        <select id="birthYear" class="w-full p-2.5 rounded-xl border border-pink-200 font-bold text-sm text-center focus:outline-pink-400 cursor-pointer bg-white" required></select>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-600 mb-1">월</label>
-                        <input type="number" id="birthMonth" min="1" max="12" value="1" class="w-full p-2.5 rounded-xl border border-pink-200 font-bold text-sm text-center focus:outline-pink-400" required>
+                        <select id="birthMonth" class="w-full p-2.5 rounded-xl border border-pink-200 font-bold text-sm text-center focus:outline-pink-400 cursor-pointer bg-white" required></select>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-600 mb-1">일</label>
-                        <input type="number" id="birthDay" min="1" max="31" value="1" class="w-full p-2.5 rounded-xl border border-pink-200 font-bold text-sm text-center focus:outline-pink-400" required>
+                        <select id="birthDay" class="w-full p-2.5 rounded-xl border border-pink-200 font-bold text-sm text-center focus:outline-pink-400 cursor-pointer bg-white" required></select>
                     </div>
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-gray-600 mb-1">태어난 시간 (선택)</label>
-                    <select id="birthHour" class="w-full p-2.5 rounded-xl border border-pink-200 font-bold text-sm text-center focus:outline-pink-400">
+                    <select id="birthHour" class="w-full p-2.5 rounded-xl border border-pink-200 font-bold text-sm text-center focus:outline-pink-400 cursor-pointer bg-white">
                         <option value="-1">모름 / 미정</option>
                         <option value="0">자시 (23:30 ~ 01:29)</option>
                         <option value="2">축시 (01:30 ~ 03:29)</option>
@@ -129,6 +130,21 @@
             <h2 class="text-3xl font-extrabold text-pink-600 font-gaegu text-center mb-6">
                 🔮 정밀 사주 & 캐릭터 분석 결과
             </h2>
+
+            <!-- Key Summary Card: Heavenly Stem (내 천간) & Dominant Element (메인 기운) -->
+            <div id="stemAndElementSummary" class="mb-6 p-4 rounded-2xl bg-gradient-to-r from-pink-50 via-purple-50 to-pink-50 border-2 border-pink-200 flex flex-wrap items-center justify-around text-center gap-4 shadow-sm">
+                <div>
+                    <span class="block text-xs font-bold text-gray-500 mb-0.5">나의 일간 (내 천간)</span>
+                    <span id="summaryDayMaster" class="text-2xl font-black text-pink-600 font-gaegu">--</span>
+                    <span id="summaryDayMasterDesc" class="block text-[11px] font-bold text-gray-600 mt-0.5">--</span>
+                </div>
+                <div class="h-8 w-[1px] bg-pink-200 hidden sm:block"></div>
+                <div>
+                    <span class="block text-xs font-bold text-gray-500 mb-0.5">나의 메인 오행 기운</span>
+                    <span id="summaryDominantElem" class="text-2xl font-black text-purple-600 font-gaegu">--</span>
+                    <span id="summaryDominantElemDesc" class="block text-[11px] font-bold text-gray-600 mt-0.5">--</span>
+                </div>
+            </div>
 
             <!-- Four Pillars Display -->
             <div id="pillarsContainer" class="hidden mb-6 bg-pink-50/80 p-4 rounded-2xl border border-pink-200">
@@ -255,7 +271,19 @@
             '壬': 'water', '癸': 'water'
         };
 
-        // 지장간 삼분법 (여기 %, 중기 %, 정기 %)
+        const STEM_NAMES = {
+            '甲': '갑목(甲木) - 당당한 큰 나무',
+            '乙': '을목(乙木) - 유연한 화초',
+            '丙': '병화(丙火) - 밝은 태양',
+            '丁': '정화(丁火) - 따뜻한 촛불',
+            '戊': '무토(戊土) - 든든한 태산',
+            '己': '기토(己土) - 비옥한 전답',
+            '庚': '경금(庚金) - 단단한 원석',
+            '辛': '신금(辛金) - 섬세한 보석',
+            '壬': '임수(壬水) - 넓고 깊은 바다',
+            '癸': '계수(癸水) - 맑고 촉촉한 맑은 물'
+        };
+
         const BRANCH_HIDDEN_STEMS = {
             '子': [{ stem: '壬', ratio: 0.3 }, { stem: '癸', ratio: 0.7 }],
             '丑': [{ stem: '癸', ratio: 0.2 }, { stem: '辛', ratio: 0.3 }, { stem: '己', ratio: 0.5 }],
@@ -272,11 +300,11 @@
         };
 
         const ELEM_INFO = {
-            wood: { name: '목(木)', color: '#10B981', bg: 'bg-emerald-500' },
-            fire: { name: '화(火)', color: '#EF4444', bg: 'bg-red-500' },
-            earth: { name: '토(土)', color: '#F59E0B', bg: 'bg-amber-500' },
-            metal: { name: '금(金)', color: '#6B7280', bg: 'bg-slate-500' },
-            water: { name: '수(水)', color: '#3B82F6', bg: 'bg-blue-500' }
+            wood: { name: '목(木)', color: '#10B981', bg: 'bg-emerald-500', desc: '성장과 생명력, 창의성' },
+            fire: { name: '화(火)', color: '#EF4444', bg: 'bg-red-500', desc: '열정과 정열, 화려한 표현' },
+            earth: { name: '토(土)', color: '#F59E0B', bg: 'bg-amber-500', desc: '포용력과 포근함, 신뢰' },
+            metal: { name: '금(金)', color: '#6B7280', bg: 'bg-slate-500', desc: '결단력과 절제, 단호한 정의' },
+            water: { name: '수(水)', color: '#3B82F6', bg: 'bg-blue-500', desc: '지혜와 풍부한 감수성, 유연함' }
         };
 
         const CHARACTERS = {
@@ -285,7 +313,7 @@
                 name: '하치와레',
                 title: '유연하고 감수성이 풍부한 다재다능 낭만가',
                 icon: '🐱',
-                img: 'https://imgur.com/d2VcFGB.png',
+                img: 'https://i.imgur.com/d2VcFGB.png',
                 bgGradient: 'from-blue-100 to-indigo-50 border-blue-300',
                 element: 'water',
                 traits: ['수다자(水多者)', '식상발달', '도화/홍염', '예리한 표현력'],
@@ -301,14 +329,14 @@
                 name: '우사기',
                 title: '자유로운 천재이자 거침없는 야생마',
                 icon: '🐰',
-                img: 'https://imgur.com/i5YTsyL.png',
+                img: 'https://i.imgur.com/i5YTsyL.png',
                 bgGradient: 'from-yellow-100 to-amber-50 border-yellow-300',
                 element: 'wood',
                 traits: ['양인살', '역마살', '천재성', '마이페이스'],
                 desc: '목(木)과 수(水)의 생명력이 왕성하며 역마 기운이 뛰어납니다. 규율에 매이지 않고 자유로우며, 긴급한 상황에서도 압도적인 행동력으로 문제를 해결해내는 천재형 스타일입니다.',
                 sajuFeature: '목수(木水) 기운 우세 / 역마·양인 (자유로운 스페셜리스트)',
                 romanticBest: '모몬가 (서로 엉뚱한 매력에 이끌리는 환상의 케미)',
-                romanticWorst: '락교/갑옷씨 (원칙과 규율을 강조해 답답함을 느낌)',
+                romanticWorst: '시사/갑옷씨 (원칙과 규율을 강조해 답답함을 느낌)',
                 workBest: '랏코 (강력한 실력과 스피드로 토벌을 쓸어버리는 조합)',
                 workWorst: '치이카와 (겁이 많아 속도를 맞추기 피곤할 수 있음)'
             },
@@ -317,7 +345,7 @@
                 name: '치이카와',
                 title: '순수하고 진솔한 대기만성형 주인공',
                 icon: '🐹',
-                img: 'https://imgur.com/deNH0G1.png',
+                img: 'https://i.imgur.com/deNH0G1.png',
                 bgGradient: 'from-pink-100 to-rose-50 border-pink-300',
                 element: 'earth',
                 traits: ['정인발달', '성장형', '순수함', '수호운'],
@@ -333,7 +361,7 @@
                 name: '모몬가',
                 title: '화려한 주목을 원하는 도화의 소유자',
                 icon: '🐿️',
-                img: 'https://imgur.com/ru9Gq3T.png',
+                img: 'https://i.imgur.com/ru9Gq3T.png',
                 bgGradient: 'from-teal-100 to-emerald-50 border-teal-300',
                 element: 'fire',
                 traits: ['화개/도화', '편인성', '관심집중', '귀여운 떼쟁이'],
@@ -341,15 +369,15 @@
                 sajuFeature: '화(火) 기운 우세 / 도화·편인 (자기표현과 강렬한 존재감)',
                 romanticBest: '우사기 (자신의 행동을 거침없이 받아주는 쿨한 상대)',
                 romanticWorst: '치이카와 (반응이 리얼해서 자꾸 괴롭히다가 미안해짐)',
-                workBest: '락교/갑옷씨 (불평하면서도 결국 챙겨주는 든든한 보호자)',
-                workWorst: '시사 (너무 부지런해서 나한테 집중 안 해줌)'
+                workBest: '시사 (불평하면서도 결국 챙겨주는 든든한 보호자)',
+                workWorst: '쿠리만쥬 (너무 부지런하거나 엄격해서 내 맘대로 안 됨)'
             },
             shisa: {
                 id: 'shisa',
                 name: '시사',
                 title: '성실하고 알뜰한 자격증 스페셜리스트',
                 icon: '🦁',
-                img: 'https://imgur.com/i1pxeul.png',
+                img: 'https://i.imgur.com/i1pxeul.png',
                 bgGradient: 'from-orange-100 to-amber-50 border-orange-300',
                 element: 'fire',
                 traits: ['식신생재', '성실함', '자격증파', '예의바름'],
@@ -357,7 +385,7 @@
                 sajuFeature: '화토(火土) 기운 우세 / 식신생재 (실속과 자격 보유)',
                 romanticBest: '하치와레 (따뜻한 대화와 칭찬으로 활력을 얻음)',
                 romanticWorst: '우사기 (규칙을 지키지 않고 제멋대로라 적응 안 됨)',
-                workBest: '락교/갑옷씨 (일머리가 좋고 원칙을 잘 지켜 일하기 최고)',
+                workBest: '쿠리만쥬 (일머리가 좋고 서로 호흡이 잘 맞음)',
                 workWorst: '모몬가 (자꾸 일을 미루고 귀여운 척만 해서 난감함)'
             },
             rakko: {
@@ -365,7 +393,7 @@
                 name: '랏코',
                 title: '카리스마 넘치나 속은 따뜻한 1위 토벌가',
                 icon: '🦦',
-                img: 'https://imgur.com/ttCxSeH.png',
+                img: 'https://i.imgur.com/ttCxSeH.png',
                 bgGradient: 'from-slate-200 to-gray-100 border-slate-400',
                 element: 'metal',
                 traits: ['편관/양인', '카리스마', '반전매력', '리더십'],
@@ -381,7 +409,7 @@
                 name: '카니 (후루츠짱)',
                 title: '모두를 다정하게 감싸안는 세심한 힐러',
                 icon: '🦀',
-                img: 'https://imgur.com/u0u6qZe.png',
+                img: 'https://i.imgur.com/u0u6qZe.png',
                 bgGradient: 'from-fuchsia-100 to-pink-50 border-fuchsia-300',
                 element: 'wood',
                 traits: ['정인/정재', '포용력', '배려심', '힐러성향'],
@@ -397,7 +425,7 @@
                 name: '쿠리만쥬',
                 title: '느긋하고 든든한 낭만 미식가',
                 icon: '🌰',
-                img: 'https://imgur.com/N074KE7.png',
+                img: 'https://i.imgur.com/N074KE7.png',
                 bgGradient: 'from-amber-100 to-orange-50 border-amber-300',
                 element: 'earth',
                 traits: ['비견발달', '풍류가', '묵직함', '식도락'],
@@ -459,7 +487,60 @@
         ];
 
         /* ==========================================================================
-           2. PRECISION SAJU CALCULATION ENGINE
+           2. POPULATE DROPDOWNS FOR BIRTHDATE (ERR-FREE SELECTION)
+           ========================================================================== */
+        function initDateDropdowns() {
+            const yearSelect = document.getElementById('birthYear');
+            const monthSelect = document.getElementById('birthMonth');
+            const daySelect = document.getElementById('birthDay');
+
+            if (!yearSelect || !monthSelect || !daySelect) return;
+
+            // Populate Years (1950 ~ 2026)
+            yearSelect.innerHTML = '';
+            for (let y = 2026; y >= 1950; y--) {
+                const opt = document.createElement('option');
+                opt.value = y;
+                opt.textContent = `${y}년`;
+                if (y === 2000) opt.selected = true;
+                yearSelect.appendChild(opt);
+            }
+
+            // Populate Months (1 ~ 12)
+            monthSelect.innerHTML = '';
+            for (let m = 1; m <= 12; m++) {
+                const opt = document.createElement('option');
+                opt.value = m;
+                opt.textContent = `${m}월`;
+                monthSelect.appendChild(opt);
+            }
+
+            // Function to dynamically update Days based on Year & Month
+            function updateDays() {
+                const selectedYear = parseInt(yearSelect.value) || 2000;
+                const selectedMonth = parseInt(monthSelect.value) || 1;
+                const currentDayVal = parseInt(daySelect.value) || 1;
+
+                // Get max days in selected month
+                const maxDays = new Date(selectedYear, selectedMonth, 0).getDate();
+
+                daySelect.innerHTML = '';
+                for (let d = 1; d <= maxDays; d++) {
+                    const opt = document.createElement('option');
+                    opt.value = d;
+                    opt.textContent = `${d}일`;
+                    if (d === Math.min(currentDayVal, maxDays)) opt.selected = true;
+                    daySelect.appendChild(opt);
+                }
+            }
+
+            yearSelect.addEventListener('change', updateDays);
+            monthSelect.addEventListener('change', updateDays);
+            updateDays();
+        }
+
+        /* ==========================================================================
+           3. PRECISION SAJU CALCULATION ENGINE
            ========================================================================== */
         
         function calculateSaju(e) {
@@ -474,7 +555,6 @@
             try {
                 let solar;
                 if (calType === 'lunar') {
-                    // 음력인 경우 Solar 변환
                     const hourVal = (h === -1) ? 12 : h;
                     const lunar = Lunar.fromYmdHms(y, m, d, hourVal, 0, 0);
                     solar = lunar.getSolar();
@@ -497,7 +577,7 @@
                 // 1. 천간 점수 계산 (기본 10점, 월간 20점 보정)
                 const gans = [
                     { gan: yearGanZhi.charAt(0), weight: 10 },
-                    { gan: monthGanZhi.charAt(0), weight: 20 }, // 월간 가중치
+                    { gan: monthGanZhi.charAt(0), weight: 20 },
                     { gan: dayGanZhi.charAt(0), weight: 10 },
                     { gan: (h !== -1) ? timeGanZhi.charAt(0) : '', weight: 10 }
                 ];
@@ -508,10 +588,10 @@
                     }
                 });
 
-                // 2. 지지 및 지장간 점수 계산 (지장간 비율 적용, 월지 2.0배 가중치)
+                // 2. 지지 및 지장간 점수 계산
                 const zhis = [
                     { zhi: yearGanZhi.charAt(1), weightMultiplier: 1.0 },
-                    { zhi: monthGanZhi.charAt(1), weightMultiplier: 2.0 }, // 월지 가중치 200%
+                    { zhi: monthGanZhi.charAt(1), weightMultiplier: 2.0 },
                     { zhi: dayGanZhi.charAt(1), weightMultiplier: 1.0 },
                     { zhi: (h !== -1) ? timeGanZhi.charAt(1) : '', weightMultiplier: 1.0 }
                 ];
@@ -530,10 +610,9 @@
                     }
                 });
 
-                // 3. 지지합(寅亥합 등) 보정: 수생목의 흐름은 인정하되 수(水) 기운을 온전히 보존
+                // 3. 지지합 보정
                 const monthBranch = monthGanZhi.charAt(1);
                 if (monthBranch === '亥') {
-                    // 해월(亥月)은 수 기운이 중심이므로 수 기운에 추가 보정점수 부여
                     scores.water += 15;
                 }
 
@@ -554,12 +633,12 @@
         }
 
         /* ==========================================================================
-           3. RESULT RENDER LOGIC
+           4. RESULT RENDER LOGIC
            ========================================================================== */
         function renderResults(scores, pillars = null) {
             const total = Object.values(scores).reduce((a, b) => a + b, 0) || 1;
 
-            // 1. Four Pillars UI
+            // 1. Four Pillars UI & Heavenly Stem / Main Element Summary
             const pillarsBox = document.getElementById('pillarsContainer');
             if (pillars) {
                 pillarsBox.classList.remove('hidden');
@@ -567,11 +646,17 @@
                 document.getElementById('pillarMonth').innerText = pillars.month;
                 document.getElementById('pillarDay').innerText = pillars.day;
                 document.getElementById('pillarHour').innerText = pillars.hour;
+
+                const dayStem = pillars.dayMaster;
+                document.getElementById('summaryDayMaster').innerText = `${dayStem} (${STEM_NAMES[dayStem] || dayStem})`;
+                document.getElementById('summaryDayMasterDesc').innerText = `나를 대표하는 핵심 일간(日干)`;
             } else {
                 pillarsBox.classList.add('hidden');
+                document.getElementById('summaryDayMaster').innerText = '심리 테스트 모드';
+                document.getElementById('summaryDayMasterDesc').innerText = '설문 답변 기반 성향 분석';
             }
 
-            // 2. Element Progress Bars
+            // 2. Element Progress Bars & Calculate Dominant Element
             const barContainer = document.getElementById('elemBars');
             barContainer.innerHTML = '';
 
@@ -602,14 +687,15 @@
             });
 
             document.getElementById('dominantElemBadge').innerText = `최고 강세: ${ELEM_INFO[maxElem].name}`;
+            document.getElementById('summaryDominantElem').innerText = `${ELEM_INFO[maxElem].name}`;
+            document.getElementById('summaryDominantElemDesc').innerText = `${ELEM_INFO[maxElem].desc}`;
 
             // Saju Explanation Note
             const noteBox = document.getElementById('sajuNoteBox');
             if (pillars) {
                 noteBox.classList.remove('hidden');
                 noteBox.innerHTML = `
-                    💡 <strong>명리 분석 리포트:</strong> 일간 <strong>${pillars.dayMaster}</strong> 기준, 월지 <strong>${pillars.month.charAt(1)}</strong>의 기운과 지장간 삼분법을 정밀 적용한 결과, <strong>${ELEM_INFO[maxElem].name}</strong> 기운이 가장 강하게 형성되었습니다.
-                    ${maxElem === 'water' ? '특히 차가우면서도 유연한 수(水) 식상의 총명함과 다재다능함이 매력 포인트입니다.' : ''}
+                    💡 <strong>명리 분석 리포트:</strong> 내 일간은 <strong>${pillars.dayMaster}</strong>이며, 월지 <strong>${pillars.month.charAt(1)}</strong>의 계절 기운과 지장간 세부 분석 결과, <strong>${ELEM_INFO[maxElem].name}</strong> 기운이 가장 강하게 형성되었습니다.
                 `;
             } else {
                 noteBox.classList.add('hidden');
@@ -618,14 +704,14 @@
             // 3. Match Character
             let matchedChar = matchCharacter(maxElem, scores, pillars ? pillars.dayMaster : null);
 
-            // 4. Render Character Card with Character Image
+            // 4. Render Character Card with Error-Fallback for Images
             const card = document.getElementById('characterCard');
             card.className = `text-center p-6 rounded-3xl bg-gradient-to-b ${matchedChar.bgGradient} border-2 mb-8 shadow-md relative overflow-hidden transition-all duration-500`;
             
             card.innerHTML = `
                 <div class="relative w-32 h-32 mx-auto mb-4">
                     <div class="absolute inset-0 bg-white/80 rounded-full shadow-inner animate-pulse"></div>
-                    <img src="${matchedChar.img}" alt="${matchedChar.name}" class="w-24 h-24 absolute inset-0 m-auto object-contain drop-shadow-md hover:scale-110 transition-transform duration-300" onerror="this.src='https://placehold.co/120x120/f9a8d4/ffffff?text=${matchedChar.name}'">
+                    <img src="${matchedChar.img}" alt="${matchedChar.name}" class="w-24 h-24 absolute inset-0 m-auto object-contain drop-shadow-md hover:scale-110 transition-transform duration-300" onerror="this.onerror=null; this.src='https://placehold.co/120x120/f9a8d4/ffffff?text=${encodeURIComponent(matchedChar.name)}';">
                 </div>
                 <span class="inline-block px-3.5 py-1 bg-white/90 text-pink-700 text-xs font-extrabold rounded-full mb-2 shadow-sm border border-pink-200">
                     ${matchedChar.sajuFeature}
@@ -651,7 +737,6 @@
             document.getElementById('workBest').innerText = matchedChar.workBest;
             document.getElementById('workWorst').innerText = matchedChar.workWorst;
 
-            // Helper to find matching character image by searching character names
             const findCharByText = (text) => {
                 return Object.values(CHARACTERS).find(c => text.includes(c.name));
             };
@@ -662,16 +747,16 @@
             const wWorstChar = findCharByText(matchedChar.workWorst);
 
             if (rBestChar) {
-                document.getElementById('romanticBestImg').innerHTML = `<img src="${rBestChar.img}" alt="${rBestChar.name}" class="w-10 h-10 object-contain drop-shadow-sm">`;
+                document.getElementById('romanticBestImg').innerHTML = `<img src="${rBestChar.img}" alt="${rBestChar.name}" class="w-10 h-10 object-contain drop-shadow-sm" onerror="this.src='https://placehold.co/80x80/f9a8d4/ffffff?text=${encodeURIComponent(rBestChar.name)}'">`;
             }
             if (rWorstChar) {
-                document.getElementById('romanticWorstImg').innerHTML = `<img src="${rWorstChar.img}" alt="${rWorstChar.name}" class="w-8 h-8 object-contain opacity-80">`;
+                document.getElementById('romanticWorstImg').innerHTML = `<img src="${rWorstChar.img}" alt="${rWorstChar.name}" class="w-8 h-8 object-contain opacity-80" onerror="this.src='https://placehold.co/80x80/cccccc/ffffff?text=${encodeURIComponent(rWorstChar.name)}'">`;
             }
             if (wBestChar) {
-                document.getElementById('workBestImg').innerHTML = `<img src="${wBestChar.img}" alt="${wBestChar.name}" class="w-10 h-10 object-contain drop-shadow-sm">`;
+                document.getElementById('workBestImg').innerHTML = `<img src="${wBestChar.img}" alt="${wBestChar.name}" class="w-10 h-10 object-contain drop-shadow-sm" onerror="this.src='https://placehold.co/80x80/f9a8d4/ffffff?text=${encodeURIComponent(wBestChar.name)}'">`;
             }
             if (wWorstChar) {
-                document.getElementById('workWorstImg').innerHTML = `<img src="${wWorstChar.img}" alt="${wWorstChar.name}" class="w-8 h-8 object-contain opacity-80">`;
+                document.getElementById('workWorstImg').innerHTML = `<img src="${wWorstChar.img}" alt="${wWorstChar.name}" class="w-8 h-8 object-contain opacity-80" onerror="this.src='https://placehold.co/80x80/cccccc/ffffff?text=${encodeURIComponent(wWorstChar.name)}'">`;
             }
 
             document.getElementById('resultSection').classList.remove('hidden');
@@ -680,7 +765,7 @@
 
         function matchCharacter(dominantElem, scores, dayMaster) {
             if (dominantElem === 'water') {
-                return CHARACTERS.hachiware; // 수다자는 하치와레
+                return CHARACTERS.hachiware;
             } else if (dominantElem === 'fire') {
                 return (scores.earth > scores.wood) ? CHARACTERS.shisa : CHARACTERS.momonga;
             } else if (dominantElem === 'wood') {
@@ -688,13 +773,13 @@
             } else if (dominantElem === 'metal') {
                 return CHARACTERS.rakko;
             } else if (dominantElem === 'earth') {
-                return (scores.metal > scores.fire) ? CHARACTERS.armor : CHARACTERS.chiikawa;
+                return (scores.water > scores.fire) ? CHARACTERS.kurimanju : CHARACTERS.chiikawa;
             }
             return CHARACTERS.hachiware;
         }
 
         /* ==========================================================================
-           4. QUIZ MODE LOGIC
+           5. QUIZ MODE LOGIC
            ========================================================================== */
         function initQuiz() {
             const container = document.getElementById('quizContainer');
@@ -734,7 +819,7 @@
         }
 
         /* ==========================================================================
-           5. 1:1 COMPATIBILITY TOOL
+           6. 1:1 COMPATIBILITY TOOL
            ========================================================================== */
         function initCompatTool() {
             const select1 = document.getElementById('compatChar1');
@@ -764,7 +849,7 @@
             if (id1 === id2) {
                 display.innerHTML = `
                     <div class="text-center py-4">
-                        <img src="${c1.img}" class="w-16 h-16 mx-auto mb-2 object-contain">
+                        <img src="${c1.img}" class="w-16 h-16 mx-auto mb-2 object-contain" onerror="this.src='https://placehold.co/80x80/f9a8d4/ffffff?text=${encodeURIComponent(c1.name)}'">
                         <h4 class="font-extrabold text-lg text-purple-700 mt-2 font-gaegu">${c1.name} X ${c2.name} (동일 인물 궁합)</h4>
                         <p class="text-xs text-gray-600 mt-1">서로의 성향을 너무 잘 알아 호흡이 잘 맞거나, 반대로 같은 단점으로 부딪힐 수 있는 데칼코마니 궁합입니다!</p>
                     </div>
@@ -786,15 +871,15 @@
             display.innerHTML = `
                 <div class="flex items-center justify-center gap-6 text-center mb-4">
                     <div class="flex flex-col items-center">
-                        <div class="w-16 h-16 rounded-full bg-white p-1 border-2 border-purple-200 shadow-sm mb-1 flex items-center justify-center">
-                            <img src="${c1.img}" alt="${c1.name}" class="w-12 h-12 object-contain">
+                        <div class="w-16 h-16 rounded-full bg-white p-1 border-2 border-purple-200 shadow-sm mb-1 flex items-center justify-center overflow-hidden">
+                            <img src="${c1.img}" alt="${c1.name}" class="w-12 h-12 object-contain" onerror="this.src='https://placehold.co/80x80/f9a8d4/ffffff?text=${encodeURIComponent(c1.name)}'">
                         </div>
                         <p class="font-extrabold text-sm text-gray-800">${c1.name}</p>
                     </div>
                     <div class="text-pink-500 font-black text-2xl font-gaegu">VS</div>
                     <div class="flex flex-col items-center">
-                        <div class="w-16 h-16 rounded-full bg-white p-1 border-2 border-purple-200 shadow-sm mb-1 flex items-center justify-center">
-                            <img src="${c2.img}" alt="${c2.name}" class="w-12 h-12 object-contain">
+                        <div class="w-16 h-16 rounded-full bg-white p-1 border-2 border-purple-200 shadow-sm mb-1 flex items-center justify-center overflow-hidden">
+                            <img src="${c2.img}" alt="${c2.name}" class="w-12 h-12 object-contain" onerror="this.src='https://placehold.co/80x80/f9a8d4/ffffff?text=${encodeURIComponent(c2.name)}'">
                         </div>
                         <p class="font-extrabold text-sm text-gray-800">${c2.name}</p>
                     </div>
@@ -809,7 +894,7 @@
         }
 
         /* ==========================================================================
-           6. NAVIGATION & UTILS
+           7. NAVIGATION & UTILS
            ========================================================================== */
         function switchTab(tab) {
             document.getElementById('sajuSection').classList.add('hidden');
@@ -853,6 +938,7 @@
         }
 
         window.onload = function() {
+            initDateDropdowns();
             initQuiz();
             initCompatTool();
         };
