@@ -22,6 +22,9 @@
             font-family: 'NostalgicMyoeunHeullim', 'Gaegu', 'Gamja Flower', cursive, sans-serif !important;
         }
         .font-gaegu, .font-gamja { font-family: 'NostalgicMyoeunHeullim', 'Gaegu', 'Gamja Flower', cursive, sans-serif !important; }
+        /* 버튼 텍스트는 줄바꿈 없이 한 줄로 (글자 크기는 JS로 자동 축소) */
+        button { white-space: nowrap; overflow: hidden; min-width: 0; }
+        #navSajuBtn, #navQuizBtn, #navCompatBtn { flex: 1 1 0; }
         /* 아이콘 폰트는 덮어쓰지 않도록 유지 */
         .fa-solid, .fas { font-family: 'Font Awesome 6 Free' !important; }
     </style>
@@ -753,6 +756,7 @@
             fillMatch('workWorst', 'workWorstImg', char.workWorst);
 
             document.getElementById('resultSection').classList.remove('hidden');
+            fitButtons();
             document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -891,7 +895,27 @@
                 document.getElementById('compatSection').classList.remove('hidden');
                 btnC.className = "px-4 sm:px-5 py-2 rounded-full font-bold text-sm sm:text-base transition-all duration-300 bg-purple-500 text-white shadow-md";
             }
+            fitButtons();
         }
+
+        // 버튼 글자가 버튼 너비를 넘으면 한 줄에 맞게 글자 크기를 동적으로 줄임
+        function fitButtons() {
+            const btns = document.querySelectorAll('button');
+            btns.forEach(b => { b.style.fontSize = ''; });
+            btns.forEach(b => {
+                if (b.clientWidth === 0) return; // 숨겨진 영역은 표시될 때 다시 계산
+                let size = parseFloat(getComputedStyle(b).fontSize);
+                while (b.scrollWidth > b.clientWidth + 0.5 && size > 8) {
+                    size -= 0.5;
+                    b.style.fontSize = size + 'px';
+                }
+            });
+            // 상단 탭 3개는 같은 크기로 맞춤
+            const navs = ['navSajuBtn', 'navQuizBtn', 'navCompatBtn'].map(id => document.getElementById(id));
+            const min = Math.min(...navs.map(b => parseFloat(getComputedStyle(b).fontSize)));
+            navs.forEach(b => { b.style.fontSize = min + 'px'; });
+        }
+        window.addEventListener('resize', fitButtons);
 
         function shareResult() {
             if (navigator.clipboard) {
@@ -1045,6 +1069,9 @@
             initDateDropdowns();
             initQuiz();
             initCompatDropdowns();
+            fitButtons();
+            if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitButtons);
+            setTimeout(fitButtons, 500);
         };
     </script>
 </body>
