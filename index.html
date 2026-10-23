@@ -269,18 +269,16 @@
                     </h4>
                     <div class="space-y-3">
                         <div class="bg-white/80 p-3 rounded-xl border border-rose-100 shadow-sm flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center shrink-0">
-                                <span class="text-xl">💕</span>
-                            </div>
+                            <img id="romanticBestImg" src="" alt="" referrerpolicy="no-referrer"
+                                 class="w-12 h-12 rounded-full bg-white border-2 border-rose-200 object-contain shrink-0">
                             <div>
                                 <span class="text-xs sm:text-sm font-bold text-rose-500 block">✨ 최고의 연인 추천</span>
                                 <p id="romanticBest" class="font-extrabold text-gray-800 text-base mt-0.5">--</p>
                             </div>
                         </div>
                         <div class="bg-white/60 p-3 rounded-xl border border-rose-100 flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
-                                <span class="text-base">⚡</span>
-                            </div>
+                            <img id="romanticWorstImg" src="" alt="" referrerpolicy="no-referrer"
+                                 class="w-12 h-12 rounded-full bg-white border-2 border-gray-200 object-contain shrink-0">
                             <div>
                                 <span class="text-xs sm:text-sm font-bold text-gray-500 block">⚡ 다툼 주의 연인</span>
                                 <p id="romanticWorst" class="font-bold text-gray-600 text-sm mt-0.5">--</p>
@@ -295,18 +293,16 @@
                     </h4>
                     <div class="space-y-3">
                         <div class="bg-white/80 p-3 rounded-xl border border-blue-100 shadow-sm flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                                <span class="text-xl">🤝</span>
-                            </div>
+                            <img id="workBestImg" src="" alt="" referrerpolicy="no-referrer"
+                                 class="w-12 h-12 rounded-full bg-white border-2 border-blue-200 object-contain shrink-0">
                             <div>
                                 <span class="text-xs sm:text-sm font-bold text-blue-500 block">🤝 최고의 환상 동료</span>
                                 <p id="workBest" class="font-extrabold text-gray-800 text-base mt-0.5">--</p>
                             </div>
                         </div>
                         <div class="bg-white/60 p-3 rounded-xl border border-blue-100 flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
-                                <span class="text-base">😮‍💨</span>
-                            </div>
+                            <img id="workWorstImg" src="" alt="" referrerpolicy="no-referrer"
+                                 class="w-12 h-12 rounded-full bg-white border-2 border-gray-200 object-contain shrink-0">
                             <div>
                                 <span class="text-xs sm:text-sm font-bold text-gray-500 block">😮‍💨 맞지 않는 피곤한 동료</span>
                                 <p id="workWorst" class="font-bold text-gray-600 text-sm mt-0.5">--</p>
@@ -539,32 +535,76 @@
             return 'inseong';
         }
 
-        // 🎯 정밀 캐릭터 매칭 알고리즘
-        function matchCharacterWithClimate(domElem, domTenGod, dayStem, monthBranch) {
-            if (domElem === 'water' || domTenGod === 'siksang') {
-                return CHARACTERS.hachiware;
-            }
-            if (domElem === 'wood' || domTenGod === 'bigeop') {
-                return CHARACTERS.usagi;
-            }
-            if (domTenGod === 'jaeseong') {
-                return CHARACTERS.shisa;
-            }
-            if (domElem === 'metal' || domTenGod === 'gwanseong') {
-                return CHARACTERS.rakko;
-            }
-            if (domElem === 'earth') {
-                return domTenGod === 'inseong' ? CHARACTERS.chiikawa : CHARACTERS.kurimanju;
-            }
-            if (domElem === 'fire') {
-                return CHARACTERS.momonga;
+        // 🎯 정밀 캐릭터 매칭 알고리즘 (오행으로 먼저 나눈 뒤 십성으로 세분화)
+        function matchCharacterWithClimate(domElem, domTenGod) {
+            switch (domElem) {
+                case 'water': return CHARACTERS.hachiware;
+                case 'metal': return CHARACTERS.rakko;
+                case 'wood':
+                    return (domTenGod === 'inseong' || domTenGod === 'gwanseong') ? CHARACTERS.kani : CHARACTERS.usagi;
+                case 'fire':
+                    return (domTenGod === 'gwanseong' || domTenGod === 'jaeseong') ? CHARACTERS.shisa : CHARACTERS.momonga;
+                case 'earth':
+                    return domTenGod === 'inseong' ? CHARACTERS.chiikawa : CHARACTERS.kurimanju;
             }
             return CHARACTERS.hachiware;
         }
 
+        // 🎯 공용 사주 분석 함수 (메인 탭 & 궁합 탭 공통 사용)
+        function analyzeSaju(solar, hasHour) {
+            const eight = solar.getLunar().getEightChar();
+            const yearGZ = eight.getYear(), monthGZ = eight.getMonth(), dayGZ = eight.getDay();
+            const hourGZ = hasHour ? eight.getTime() : '--';
+            const dayStem = dayGZ.charAt(0);
+
+            const counts = { wood: 0, fire: 0, earth: 0, metal: 0, water: 0 };
+            const tenGodsScores = { bigeop: 0, siksang: 0, jaeseong: 0, gwanseong: 0, inseong: 0 };
+
+            const stems = [
+                { stem: yearGZ.charAt(0), weight: 1.0 },
+                { stem: monthGZ.charAt(0), weight: 1.5 },
+                { stem: dayGZ.charAt(0), weight: 1.0 }
+            ];
+            const branches = [
+                { branch: yearGZ.charAt(1), weight: 1.0 },
+                { branch: monthGZ.charAt(1), weight: 2.0 },
+                { branch: dayGZ.charAt(1), weight: 1.0 }
+            ];
+            if (hasHour) {
+                stems.push({ stem: hourGZ.charAt(0), weight: 1.0 });
+                branches.push({ branch: hourGZ.charAt(1), weight: 1.0 });
+            }
+
+            stems.forEach(({ stem, weight }) => {
+                counts[STEM_ELEMENTS[stem]] += weight;
+                if (stem !== dayStem) tenGodsScores[getTenGodCategory(dayStem, stem)] += weight;
+            });
+
+            branches.forEach(({ branch, weight }) => {
+                BRANCH_HIDDEN_STEMS[branch].forEach(h => {
+                    const pts = h.ratio * weight;
+                    counts[STEM_ELEMENTS[h.stem]] += pts;
+                    tenGodsScores[getTenGodCategory(dayStem, h.stem)] += pts;
+                });
+            });
+
+            // 동점이면 일간 오행을 우선
+            const dayElem = STEM_ELEMENTS[dayStem];
+            let dominantElem = dayElem;
+            Object.keys(counts).forEach(k => { if (counts[k] > counts[dominantElem]) dominantElem = k; });
+
+            let dominantTenGod = 'bigeop';
+            Object.keys(tenGodsScores).forEach(k => { if (tenGodsScores[k] > tenGodsScores[dominantTenGod]) dominantTenGod = k; });
+
+            return {
+                char: matchCharacterWithClimate(dominantElem, dominantTenGod),
+                dayStem, dominantElem, dominantTenGod, counts,
+                pillars: { hour: hourGZ, day: dayGZ, month: monthGZ, year: yearGZ }
+            };
+        }
+
         function calculateSaju(e) {
             e.preventDefault();
-
             const year = parseInt(document.getElementById('birthYear').value);
             const month = parseInt(document.getElementById('birthMonth').value);
             const day = parseInt(document.getElementById('birthDay').value);
@@ -573,108 +613,16 @@
 
             let solar;
             try {
-                if (isLunar) {
-                    solar = Lunar.fromYmdHms(year, month, day, hour >= 0 ? hour : 12, 0, 0).getSolar();
-                } else {
-                    solar = Solar.fromYmdHms(year, month, day, hour >= 0 ? hour : 12, 0, 0);
-                }
+                solar = isLunar
+                    ? Lunar.fromYmdHms(year, month, day, hour >= 0 ? hour : 12, 0, 0).getSolar()
+                    : Solar.fromYmdHms(year, month, day, hour >= 0 ? hour : 12, 0, 0);
             } catch (err) {
                 alert('올바른 생년월일을 선택해주세요.');
                 return;
             }
 
-            const lunar = solar.getLunar();
-            const eight = lunar.getEightChar();
-
-            const yearGanzhi = eight.getYear();
-            const monthGanzhi = eight.getMonth();
-            const dayGanzhi = eight.getDay();
-            const hourGanzhi = hour >= 0 ? eight.getTime() : '--';
-
-            const dayStem = dayGanzhi.charAt(0);
-            const monthBranch = monthGanzhi.charAt(1);
-
-            // 오행 및 십성 표준 점수 집계
-            const counts = { wood: 0, fire: 0, earth: 0, metal: 0, water: 0 };
-            const tenGodsScores = { bigeop: 0, siksang: 0, jaeseong: 0, gwanseong: 0, inseong: 0 };
-
-            const stems = [
-                { stem: yearGanzhi.charAt(0), weight: 1.0 },
-                { stem: monthGanzhi.charAt(0), weight: 1.5 }, // 월간 가중치
-                { stem: dayGanzhi.charAt(0), weight: 1.0 }
-            ];
-            
-            const branches = [
-                { branch: yearGanzhi.charAt(1), weight: 1.0 },
-                { branch: monthGanzhi.charAt(1), weight: 2.0 }, // 월지 득령 가중치 2.0
-                { branch: dayGanzhi.charAt(1), weight: 1.0 }
-            ];
-
-            if (hour >= 0) {
-                stems.push({ stem: hourGanzhi.charAt(0), weight: 1.0 });
-                branches.push({ branch: hourGanzhi.charAt(1), weight: 1.0 });
-            }
-
-            // 천간 반영
-            stems.forEach(item => {
-                const s = item.stem;
-                if (STEM_ELEMENTS[s]) {
-                    counts[STEM_ELEMENTS[s]] += item.weight;
-                    if (s !== dayStem) {
-                        const cat = getTenGodCategory(dayStem, s);
-                        tenGodsScores[cat] += item.weight;
-                    }
-                }
-            });
-
-            // 지지 및 지장간 반영
-            branches.forEach(item => {
-                const b = item.branch;
-                const hidden = BRANCH_HIDDEN_STEMS[b];
-                if (hidden) {
-                    hidden.forEach(h => {
-                        const elem = STEM_ELEMENTS[h.stem];
-                        const pts = h.ratio * item.weight;
-                        if (elem) {
-                            counts[elem] += pts;
-                            const cat = getTenGodCategory(dayStem, h.stem);
-                            tenGodsScores[cat] += pts;
-                        }
-                    });
-                }
-            });
-
-            // 최고 오행 추출
-            let maxElemCount = -1;
-            let dominantElem = 'water';
-            Object.keys(counts).forEach(k => {
-                if (counts[k] > maxElemCount) {
-                    maxElemCount = counts[k];
-                    dominantElem = k;
-                }
-            });
-
-            // 최고 십성 추출
-            let maxTenGodScore = -1;
-            let dominantTenGod = 'siksang';
-            Object.keys(tenGodsScores).forEach(k => {
-                if (tenGodsScores[k] > maxTenGodScore) {
-                    maxTenGodScore = tenGodsScores[k];
-                    dominantTenGod = k;
-                }
-            });
-
-            const matchedChar = matchCharacterWithClimate(dominantElem, dominantTenGod, dayStem, monthBranch);
-
-            renderSajuResult({
-                char: matchedChar,
-                dayStem: dayStem,
-                dominantElem: dominantElem,
-                dominantTenGod: dominantTenGod,
-                counts: counts,
-                pillars: { hour: hourGanzhi, day: dayGanzhi, month: monthGanzhi, year: yearGanzhi },
-                hasHour: hour >= 0
-            });
+            const r = analyzeSaju(solar, hour >= 0);
+            renderSajuResult({ ...r, hasHour: hour >= 0 });
         }
 
         function submitQuiz() {
@@ -693,17 +641,33 @@
                 }
             });
 
-            const matchedChar = matchCharacterWithClimate(dominantElem, 'siksang', '甲', '寅');
+            const matchedChar = matchCharacterWithClimate(dominantElem, 'bigeop');
 
             renderSajuResult({
                 char: matchedChar,
                 dayStem: '甲',
                 dominantElem: dominantElem,
-                dominantTenGod: 'siksang',
+                dominantTenGod: 'bigeop',
                 counts: counts,
                 pillars: null,
                 hasHour: false
             });
+        }
+
+        // 궁합 리포트: 캐릭터 이름으로 사진 찾아서 채우기
+        function fillMatch(textId, imgId, text) {
+            const name = text.split(' (')[0].trim();
+            const c = Object.values(CHARACTERS).find(ch => ch.name === name);
+            const img = document.getElementById(imgId);
+            document.getElementById(textId).textContent = text;
+            if (c) {
+                img.src = c.img;
+                img.alt = c.name;
+                img.onerror = () => {
+                    img.onerror = null;
+                    img.src = `https://placehold.co/48x48/fbcfe8/be185d?text=${encodeURIComponent(c.name)}`;
+                };
+            }
         }
 
         function renderSajuResult(data) {
@@ -715,7 +679,7 @@
                     나와 닮은 먼작귀 캐릭터
                 </div>
                 <div class="w-32 h-32 sm:w-40 sm:h-40 mx-auto mb-3 rounded-full bg-white p-2 border-4 border-pink-200 shadow-inner flex items-center justify-center overflow-hidden">
-                    <img src="${char.img}" alt="${char.name}" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/160x160/fbcfe8/be185d?text=${encodeURIComponent(char.name)}'">
+                    <img src="${char.img}" alt="${char.name}" referrerpolicy="no-referrer" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/160x160/fbcfe8/be185d?text=${encodeURIComponent(char.name)}'">
                 </div>
                 <h3 class="text-3xl sm:text-4xl font-black text-pink-600 font-gaegu mb-1">${char.name}</h3>
                 <p class="text-base sm:text-lg font-bold text-gray-600 mb-3">${char.title}</p>
@@ -728,7 +692,7 @@
             `;
 
             document.getElementById('summaryDayMaster').textContent = data.dayStem ? `${data.dayStem}일간` : '분석 완료';
-            document.getElementById('summaryDayMasterDesc').textContent = STEM_NAMES[data.dayStem] || '개성 기운';
+            document.getElementById('summaryDayMasterDesc').textContent = (data.pillars && STEM_NAMES[data.dayStem]) || '개성 기운';
             
             document.getElementById('summaryTenGod').textContent = tenGod.name;
             document.getElementById('summaryTenGodDesc').textContent = tenGod.title;
@@ -779,10 +743,10 @@
                 <p class="text-xs text-blue-800 bg-white/70 p-2.5 rounded-xl border border-blue-100">💡 <strong>사주 특징:</strong> ${char.sajuFeature}</p>
             `;
 
-            document.getElementById('romanticBest').textContent = char.romanticBest;
-            document.getElementById('romanticWorst').textContent = char.romanticWorst;
-            document.getElementById('workBest').textContent = char.workBest;
-            document.getElementById('workWorst').textContent = char.workWorst;
+            fillMatch('romanticBest', 'romanticBestImg', char.romanticBest);
+            fillMatch('romanticWorst', 'romanticWorstImg', char.romanticWorst);
+            fillMatch('workBest', 'workBestImg', char.workBest);
+            fillMatch('workWorst', 'workWorstImg', char.workWorst);
 
             document.getElementById('resultSection').classList.remove('hidden');
             document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
@@ -801,25 +765,31 @@
                 const h = parseInt(document.getElementById(hId).value);
                 const isLunar = document.querySelector(`input[name="${calName}"]:checked`).value === 'lunar';
 
-                let solar = isLunar 
-                    ? Lunar.fromYmdHms(y, m, d, h >= 0 ? h : 12, 0, 0).getSolar() 
+                const solar = isLunar
+                    ? Lunar.fromYmdHms(y, m, d, h >= 0 ? h : 12, 0, 0).getSolar()
                     : Solar.fromYmdHms(y, m, d, h >= 0 ? h : 12, 0, 0);
 
                 const eight = solar.getLunar().getEightChar();
+                const r = analyzeSaju(solar, h >= 0);
                 return {
                     dayStem: eight.getDay().charAt(0),
                     dayBranch: eight.getDay().charAt(1),
-                    monthBranch: eight.getMonth().charAt(1),
-                    yearBranch: eight.getYear().charAt(1),
-                    dayGanzhi: eight.getDay()
+                    dayGanzhi: eight.getDay(),
+                    char: r.char
                 };
             };
 
-            const p1 = parseDate('compatYear1', 'compatMonth1', 'compatDay1', 'compatHour1', 'compatCal1');
-            const p2 = parseDate('compatYear2', 'compatMonth2', 'compatDay2', 'compatHour2', 'compatCal2');
+            let p1, p2;
+            try {
+                p1 = parseDate('compatYear1', 'compatMonth1', 'compatDay1', 'compatHour1', 'compatCal1');
+                p2 = parseDate('compatYear2', 'compatMonth2', 'compatDay2', 'compatHour2', 'compatCal2');
+            } catch (err) {
+                alert('올바른 생년월일을 선택해주세요.');
+                return;
+            }
 
-            const c1 = matchCharacterWithClimate(STEM_ELEMENTS[p1.dayStem] || 'water', 'siksang', p1.dayStem, p1.monthBranch);
-            const c2 = matchCharacterWithClimate(STEM_ELEMENTS[p2.dayStem] || 'wood', 'siksang', p2.dayStem, p2.monthBranch);
+            const c1 = p1.char;
+            const c2 = p2.char;
 
             let score = 78;
             let details = [];
@@ -862,7 +832,7 @@
                 <div class="flex items-center justify-center gap-6 text-center mb-5">
                     <div class="flex flex-col items-center">
                         <div class="w-20 h-20 rounded-full bg-white p-1 border-2 border-pink-300 shadow-md mb-1 flex items-center justify-center overflow-hidden">
-                            <img src="${c1.img}" alt="${c1.name}" class="w-16 h-16 object-contain" onerror="this.src='https://placehold.co/80x80/fbcfe8/be185d?text=${encodeURIComponent(c1.name)}'">
+                            <img src="${c1.img}" alt="${c1.name}" referrerpolicy="no-referrer" class="w-16 h-16 object-contain" onerror="this.src='https://placehold.co/80x80/fbcfe8/be185d?text=${encodeURIComponent(c1.name)}'">
                         </div>
                         <p class="font-extrabold text-base text-gray-800">${c1.name}</p>
                         <span class="text-xs text-purple-600 font-bold">${p1.dayGanzhi}일주</span>
@@ -875,7 +845,7 @@
 
                     <div class="flex flex-col items-center">
                         <div class="w-20 h-20 rounded-full bg-white p-1 border-2 border-purple-300 shadow-md mb-1 flex items-center justify-center overflow-hidden">
-                            <img src="${c2.img}" alt="${c2.name}" class="w-16 h-16 object-contain" onerror="this.src='https://placehold.co/80x80/e9d5ff/6b21a8?text=${encodeURIComponent(c2.name)}'">
+                            <img src="${c2.img}" alt="${c2.name}" referrerpolicy="no-referrer" class="w-16 h-16 object-contain" onerror="this.src='https://placehold.co/80x80/e9d5ff/6b21a8?text=${encodeURIComponent(c2.name)}'">
                         </div>
                         <p class="font-extrabold text-base text-gray-800">${c2.name}</p>
                         <span class="text-xs text-purple-600 font-bold">${p2.dayGanzhi}일주</span>
