@@ -6,11 +6,9 @@
     <title>치이카와 정밀 사주 만세력 & 궁합 테스트</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Nanum Gothic, Gaegu, Gamja Flower 추가 -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Gamja+Flower&family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
-    <!-- Custom Style for Universal Fonts -->
     <style>
-        /* 모든 요소(드롭다운, 버튼, 입력창 포함)에 귀여운 폰트 일괄 적용 */
         * {
             font-family: 'Gaegu', 'Gamja Flower', cursive, sans-serif !important;
         }
@@ -22,7 +20,7 @@
     </style>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- lunar-javascript (정밀 음양력 및 만세력 계산 라이브러리) -->
+    <!-- lunar-javascript -->
     <script src="https://cdn.jsdelivr.net/npm/lunar-javascript@1.6.12/lunar.js"></script>
 </head>
 <body class="bg-pink-50 text-gray-800 font-sans min-h-screen pb-12">
@@ -38,13 +36,13 @@
 
         <!-- Navigation Tabs -->
         <nav class="flex justify-center gap-2 mt-6 bg-pink-100/70 p-1.5 rounded-full border border-pink-200">
-            <button id="navSajuBtn" onclick="switchTab('saju')" class="px-5 py-2 rounded-full font-bold text-base sm:text-lg transition-all duration-300 bg-pink-500 text-white shadow-md">
+            <button id="navSajuBtn" onclick="switchTab('saju')" class="px-4 sm:px-5 py-2 rounded-full font-bold text-sm sm:text-base transition-all duration-300 bg-pink-500 text-white shadow-md">
                 🔮 만세력 사주
             </button>
-            <button id="navQuizBtn" onclick="switchTab('quiz')" class="px-5 py-2 rounded-full font-bold text-base sm:text-lg transition-all duration-300 text-pink-700 hover:bg-pink-200">
+            <button id="navQuizBtn" onclick="switchTab('quiz')" class="px-4 sm:px-5 py-2 rounded-full font-bold text-sm sm:text-base transition-all duration-300 text-pink-700 hover:bg-pink-200">
                 📝 심리 테스트
             </button>
-            <button id="navCompatBtn" onclick="switchTab('compat')" class="px-5 py-2 rounded-full font-bold text-base sm:text-lg transition-all duration-300 text-pink-700 hover:bg-pink-200">
+            <button id="navCompatBtn" onclick="switchTab('compat')" class="px-4 sm:px-5 py-2 rounded-full font-bold text-sm sm:text-base transition-all duration-300 text-pink-700 hover:bg-pink-200">
                 💕 정밀 1:1 사주 궁합
             </button>
         </nav>
@@ -67,7 +65,6 @@
                     </label>
                 </div>
 
-                <!-- Dropdown Selectors for Year, Month, Day -->
                 <div class="grid grid-cols-3 gap-2">
                     <div>
                         <label class="block text-sm font-bold text-gray-600 mb-1">년도</label>
@@ -170,11 +167,11 @@
                 🔮 정밀 사주 & 캐릭터 분석 결과
             </h2>
 
-            <!-- Main Character Matching Result (Placed at the very top of results) -->
+            <!-- Main Character Matching Result -->
             <div id="characterCard" class="text-center p-6 rounded-3xl bg-gradient-to-b from-pink-100/80 to-white border-2 border-pink-300 mb-8">
             </div>
 
-            <!-- Key Summary Card: Heavenly Stem (내 천간) & Dominant Element (메인 기운) -->
+            <!-- Key Summary Card: Heavenly Stem & Dominant Element -->
             <div id="stemAndElementSummary" class="mb-6 p-4 rounded-2xl bg-gradient-to-r from-pink-50 via-purple-50 to-pink-50 border-2 border-pink-200 flex flex-wrap items-center justify-around text-center gap-4 shadow-sm">
                 <div>
                     <span class="block text-sm font-bold text-gray-500 mb-0.5">나의 일간 (내 천간)</span>
@@ -299,7 +296,7 @@
 
     <script>
         /* ==========================================================================
-           1. PRECISION SAJU DATA & HIDDEN STEMS (지장간) DEFINITIONS
+           1. PRECISION SAJU DATA & HIDDEN STEMS DEFINITIONS
            ========================================================================== */
         
         const STEM_ELEMENTS = {
@@ -493,7 +490,7 @@
                     { txt: "일단 냉철하게 분석하여 신속하게 결단을 내린다.", elem: 'metal' },
                     { txt: "유연하고 긍정적인 마인드로 다양한 아이디어를 낸다.", elem: 'water' },
                     { txt: "당황하지만 차근차근 묵묵히 해결책을 찾아낸다.", elem: 'earth' },
-                    { txt: "에헤이~! 내 직감과 에너지로 거침없이 부딪혀 본다.", elem: 'wood' }
+                    { txt: "내 직감과 에너지로 거침없이 부딪혀 본다.", elem: 'wood' }
                 ]
             },
             {
@@ -506,7 +503,7 @@
                 ]
             },
             {
-                q: "4. 시험이나 중요한 자격증/과제를 준비할 때 스타일은?",
+                q: "4. 중요한 시험이나 과제를 준비할 때 스타일은?",
                 options: [
                     { txt: "플래너와 일정을 아주 엄격하게 계획해서 완벽히 이행한다.", elem: 'metal' },
                     { txt: "벼락치기라도 폭발적인 집중력으로 단숨에 해결한다.", elem: 'wood' },
@@ -526,14 +523,12 @@
         ];
 
         /* ==========================================================================
-           6. PRECISION SAJU COMPATIBILITY (합/충/파/원진 & 조후 분석)
+           2. COMPATIBILITY DICTIONARIES
            ========================================================================== */
-        
-        // 천간합, 지지합, 충, 원진, 파 정의
         const STEM_COMBINATIONS = {
-            '甲己': '갑기합(甲己合 - 중정지합)', '乙庚': '을경합(乙庚合 - 인의지합)',
-            '丙辛': '병신합(丙辛合 - 위엄지합)', '丁壬': '정임합(丁壬合 - 인수지합)',
-            '戊癸': '무계합(戊癸合 - 무정한합)'
+            '甲己': '갑기합(甲己合)', '乙庚': '을경합(乙庚合)',
+            '丙辛': '병신합(丙辛合)', '丁壬': '정임합(丁壬合)',
+            '戊癸': '무계합(戊癸合)'
         };
 
         const BRANCH_COMBINATIONS = {
@@ -542,16 +537,61 @@
         };
 
         const BRANCH_CLASHES = {
-            '子午': '자오충(子午沖 - 감정과 건강의 부딪힘)', '丑未': '축미충(丑未沖 - 재물과 환경 변화)',
-            '寅申': '인신충(寅申沖 - 행동과 이동의 다툼)', '卯酉': '묘유충(卯酉沖 - 인간관계 및 직관 갈등)',
-            '辰戌': '진술충(辰戌沖 - 고집과 주관의 충돌)', '巳亥': '사해충(巳亥沖 - 마음과 생각의 마찰)'
+            '子午': '자오충(子午沖)', '丑未': '축미충(丑未沖)',
+            '寅申': '인신충(寅申沖)', '卯酉': '묘유충(卯酉沖)',
+            '辰戌': '진술충(辰戌沖)', '巳亥': '사해충(巳亥沖)'
         };
 
         const BRANCH_WONJIN = {
-            '子未': '자미 원진(子未 怨嗔 - 원망과 집착)', '丑午': '축오 원진(丑午 怨嗔 - 오해와 불만)',
-            '寅酉': '인유 원진(寅酉 怨嗔 - 자존심 대립)', '卯申': '묘신 원진(卯申 怨嗔 - 이유 없는 서운함)',
-            '辰亥': '진해 원진(辰亥 怨嗔 - 서운한 감정 이끌림)', '巳戌': '사술 원진(巳戌 怨嗔 - 예민함과 마찰)'
+            '子未': '자미 원진', '丑午': '축오 원진',
+            '寅酉': '인유 원진', '卯申': '묘신 원진',
+            '辰亥': '진해 원진', '巳戌': '사술 원진'
         };
+
+        /* ==========================================================================
+           3. INITIALIZATION & DROPDOWN LOGIC
+           ========================================================================== */
+        function initDateDropdowns() {
+            const ySel = document.getElementById('birthYear');
+            const mSel = document.getElementById('birthMonth');
+            const dSel = document.getElementById('birthDay');
+
+            if (!ySel || !mSel || !dSel) return;
+
+            ySel.innerHTML = '';
+            for (let y = 2026; y >= 1950; y--) {
+                const opt = document.createElement('option');
+                opt.value = y;
+                opt.textContent = `${y}년`;
+                if (y === 2000) opt.selected = true;
+                ySel.appendChild(opt);
+            }
+
+            mSel.innerHTML = '';
+            for (let m = 1; m <= 12; m++) {
+                const opt = document.createElement('option');
+                opt.value = m;
+                opt.textContent = `${m}월`;
+                mSel.appendChild(opt);
+            }
+
+            function updateDays() {
+                const year = parseInt(ySel.value) || 2000;
+                const month = parseInt(mSel.value) || 1;
+                const maxDays = new Date(year, month, 0).getDate();
+                dSel.innerHTML = '';
+                for (let d = 1; d <= maxDays; d++) {
+                    const opt = document.createElement('option');
+                    opt.value = d;
+                    opt.textContent = `${d}일`;
+                    dSel.appendChild(opt);
+                }
+            }
+
+            ySel.addEventListener('change', updateDays);
+            mSel.addEventListener('change', updateDays);
+            updateDays();
+        }
 
         function initCompatDropdowns() {
             const y1 = document.getElementById('compatYear1');
@@ -607,6 +647,229 @@
             populateDays(y2, m2, d2);
         }
 
+        function initQuiz() {
+            const container = document.getElementById('quizContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            QUIZ_QUESTIONS.forEach((qObj, qIdx) => {
+                const qCard = document.createElement('div');
+                qCard.className = 'bg-yellow-50/60 p-4 rounded-2xl border border-yellow-100';
+                
+                let html = `<p class="font-extrabold text-base text-gray-800 mb-2 font-gaegu text-lg">${qObj.q}</p><div class="space-y-1.5">`;
+                qObj.options.forEach((opt, oIdx) => {
+                    html += `
+                        <label class="flex items-center gap-2 p-2 rounded-xl bg-white/80 border border-yellow-100 hover:bg-yellow-100/50 cursor-pointer text-sm font-bold text-gray-700">
+                            <input type="radio" name="quiz_q_${qIdx}" value="${opt.elem}" ${oIdx === 0 ? 'checked' : ''} class="accent-amber-500">
+                            <span>${opt.txt}</span>
+                        </label>
+                    `;
+                });
+                html += `</div>`;
+                qCard.innerHTML = html;
+                container.appendChild(qCard);
+            });
+        }
+
+        /* ==========================================================================
+           4. SAJU CALCULATION CORE
+           ========================================================================== */
+        function calculateSaju(e) {
+            e.preventDefault();
+
+            const year = parseInt(document.getElementById('birthYear').value);
+            const month = parseInt(document.getElementById('birthMonth').value);
+            const day = parseInt(document.getElementById('birthDay').value);
+            const hour = parseInt(document.getElementById('birthHour').value);
+            const isLunar = document.querySelector('input[name="calendarType"]:checked').value === 'lunar';
+
+            let solar;
+            try {
+                if (isLunar) {
+                    solar = Lunar.fromYmdHms(year, month, day, hour >= 0 ? hour : 12, 0, 0).getSolar();
+                } else {
+                    solar = Solar.fromYmdHms(year, month, day, hour >= 0 ? hour : 12, 0, 0);
+                }
+            } catch (err) {
+                alert('올바른 생년월일을 선택해주세요.');
+                return;
+            }
+
+            const lunar = solar.getLunar();
+            const eight = lunar.getEightChar();
+
+            const yearGanzhi = eight.getYear();
+            const monthGanzhi = eight.getMonth();
+            const dayGanzhi = eight.getDay();
+            const hourGanzhi = hour >= 0 ? eight.getTime() : '--';
+
+            const dayStem = dayGanzhi.charAt(0);
+
+            // Calculate Five Elements
+            const counts = { wood: 0, fire: 0, earth: 0, metal: 0, water: 0 };
+            const stems = [yearGanzhi.charAt(0), monthGanzhi.charAt(0), dayGanzhi.charAt(0)];
+            const branches = [yearGanzhi.charAt(1), monthGanzhi.charAt(1), dayGanzhi.charAt(1)];
+            
+            if (hour >= 0) {
+                stems.push(hourGanzhi.charAt(0));
+                branches.push(hourGanzhi.charAt(1));
+            }
+
+            stems.forEach(s => { if (STEM_ELEMENTS[s]) counts[STEM_ELEMENTS[s]] += 1.0; });
+            branches.forEach(b => {
+                const hidden = BRANCH_HIDDEN_STEMS[b];
+                if (hidden) {
+                    hidden.forEach(h => {
+                        if (STEM_ELEMENTS[h.stem]) counts[STEM_ELEMENTS[h.stem]] += h.ratio;
+                    });
+                }
+            });
+
+            // Find Dominant Element
+            let maxCount = -1;
+            let dominantElem = 'water';
+            Object.keys(counts).forEach(k => {
+                if (counts[k] > maxCount) {
+                    maxCount = counts[k];
+                    dominantElem = k;
+                }
+            });
+
+            const matchedChar = matchCharacter(dominantElem, counts, dayStem);
+
+            renderSajuResult({
+                char: matchedChar,
+                dayStem: dayStem,
+                dominantElem: dominantElem,
+                counts: counts,
+                pillars: { hour: hourGanzhi, day: dayGanzhi, month: monthGanzhi, year: yearGanzhi },
+                hasHour: hour >= 0
+            });
+        }
+
+        function matchCharacter(domElem, counts, dayStem) {
+            if (domElem === 'water') return CHARACTERS.hachiware;
+            if (domElem === 'wood') return counts.water > 1.5 ? CHARACTERS.usagi : CHARACTERS.kani;
+            if (domElem === 'fire') return counts.earth > 1.5 ? CHARACTERS.shisa : CHARACTERS.momonga;
+            if (domElem === 'earth') return counts.wood > 1.0 ? CHARACTERS.chiikawa : CHARACTERS.kurimanju;
+            if (domElem === 'metal') return CHARACTERS.rakko;
+            return CHARACTERS.chiikawa;
+        }
+
+        function submitQuiz() {
+            const counts = { wood: 0, fire: 0, earth: 0, metal: 0, water: 0 };
+            for (let i = 0; i < QUIZ_QUESTIONS.length; i++) {
+                const selected = document.querySelector(`input[name="quiz_q_${i}"]:checked`);
+                if (selected) counts[selected.value] += 1;
+            }
+
+            let maxCount = -1;
+            let dominantElem = 'water';
+            Object.keys(counts).forEach(k => {
+                if (counts[k] > maxCount) {
+                    maxCount = counts[k];
+                    dominantElem = k;
+                }
+            });
+
+            const matchedChar = matchCharacter(dominantElem, counts, '甲');
+
+            renderSajuResult({
+                char: matchedChar,
+                dayStem: '甲',
+                dominantElem: dominantElem,
+                counts: counts,
+                pillars: null,
+                hasHour: false
+            });
+        }
+
+        function renderSajuResult(data) {
+            const char = data.char;
+
+            // 1. Character Card
+            document.getElementById('characterCard').innerHTML = `
+                <div class="inline-block px-3 py-1 bg-pink-200 text-pink-800 rounded-full text-xs sm:text-sm font-bold mb-3">
+                    나와 닮은 먼작귀 캐릭터
+                </div>
+                <div class="w-32 h-32 sm:w-40 sm:h-40 mx-auto mb-3 rounded-full bg-white p-2 border-4 border-pink-200 shadow-inner flex items-center justify-center overflow-hidden">
+                    <img src="${char.img}" alt="${char.name}" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/160x160/f9a8d4/ffffff?text=${encodeURIComponent(char.name)}'">
+                </div>
+                <h3 class="text-3xl sm:text-4xl font-black text-pink-600 font-gaegu mb-1">${char.name}</h3>
+                <p class="text-base sm:text-lg font-bold text-gray-600 mb-3">${char.title}</p>
+                <div class="flex flex-wrap justify-center gap-1.5 mb-4">
+                    ${char.traits.map(t => `<span class="px-2.5 py-0.5 bg-pink-100 text-pink-700 font-bold rounded-md text-xs sm:text-sm">#${t}</span>`).join('')}
+                </div>
+                <p class="text-sm sm:text-base text-gray-700 leading-relaxed text-left bg-pink-50/60 p-4 rounded-2xl border border-pink-100 font-bold">
+                    ${char.desc}
+                </p>
+            `;
+
+            // 2. Summary
+            document.getElementById('summaryDayMaster').textContent = data.dayStem ? `${data.dayStem}일간` : '분석 완료';
+            document.getElementById('summaryDayMasterDesc').textContent = STEM_NAMES[data.dayStem] || '개성 넘치는 기운';
+            document.getElementById('summaryDominantElem').textContent = ELEM_INFO[data.dominantElem].name;
+            document.getElementById('summaryDominantElemDesc').textContent = ELEM_INFO[data.dominantElem].desc;
+
+            // 3. Four Pillars
+            const pillarsCont = document.getElementById('pillarsContainer');
+            if (data.pillars) {
+                pillarsCont.classList.remove('hidden');
+                document.getElementById('pillarHour').textContent = data.hasHour ? data.pillars.hour : '미정';
+                document.getElementById('pillarDay').textContent = data.pillars.day;
+                document.getElementById('pillarMonth').textContent = data.pillars.month;
+                document.getElementById('pillarYear').textContent = data.pillars.year;
+            } else {
+                pillarsCont.classList.add('hidden');
+            }
+
+            // 4. Five Elements Bar
+            const barsContainer = document.getElementById('elemBars');
+            barsContainer.innerHTML = '';
+            let total = 0;
+            Object.values(data.counts).forEach(v => total += v);
+            if (total === 0) total = 1;
+
+            Object.keys(ELEM_INFO).forEach(key => {
+                const info = ELEM_INFO[key];
+                const count = data.counts[key] || 0;
+                const pct = Math.round((count / total) * 100);
+
+                const barRow = document.createElement('div');
+                barRow.innerHTML = `
+                    <div class="flex justify-between text-xs font-bold text-gray-600 mb-1">
+                        <span>${info.name}</span>
+                        <span>${pct}%</span>
+                    </div>
+                    <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+                        <div class="${info.bg} h-full transition-all duration-500" style="width: ${pct}%"></div>
+                    </div>
+                `;
+                barsContainer.appendChild(barRow);
+            });
+
+            document.getElementById('dominantElemBadge').textContent = `메인 기운: ${ELEM_INFO[data.dominantElem].name}`;
+
+            // 5. Note Box
+            document.getElementById('sajuNoteBox').innerHTML = `
+                <p class="text-blue-900 font-bold">✨ 사주 특징 요약</p>
+                <p class="mt-1">${char.sajuFeature}</p>
+            `;
+
+            // 6. Compatibility Cards
+            document.getElementById('romanticBest').textContent = char.romanticBest;
+            document.getElementById('romanticWorst').textContent = char.romanticWorst;
+            document.getElementById('workBest').textContent = char.workBest;
+            document.getElementById('workWorst').textContent = char.workWorst;
+
+            // Show Result Section
+            document.getElementById('resultSection').classList.remove('hidden');
+            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        /* ==========================================================================
+           5. 1:1 COMPATIBILITY CALCULATION
+           ========================================================================== */
         function calculateSajuCompat(e) {
             e.preventDefault();
 
@@ -633,59 +896,38 @@
             const p1 = parseDate('compatYear1', 'compatMonth1', 'compatDay1', 'compatCal1');
             const p2 = parseDate('compatYear2', 'compatMonth2', 'compatDay2', 'compatCal2');
 
-            // 1. 캐릭터 매칭
             const c1 = matchCharacter(STEM_ELEMENTS[p1.dayStem] || 'water', { water: 10, wood: 10, fire: 10, earth: 10, metal: 10 }, p1.dayStem);
             const c2 = matchCharacter(STEM_ELEMENTS[p2.dayStem] || 'wood', { water: 10, wood: 10, fire: 10, earth: 10, metal: 10 }, p2.dayStem);
 
-            // 2. 점수 및 합/충/조후 분석
             let score = 75;
             let details = [];
 
-            // 천간합 (일간의 합)
             const stemPair1 = p1.dayStem + p2.dayStem;
             const stemPair2 = p2.dayStem + p1.dayStem;
             if (STEM_COMBINATIONS[stemPair1] || STEM_COMBINATIONS[stemPair2]) {
                 score += 15;
-                details.push(`✨ <strong>천간합(${STEM_COMBINATIONS[stemPair1] || STEM_COMBINATIONS[stemPair2]})</strong>: 첫눈에 서로에게 강하게 끌리는 운명적 일간 결합입니다.`);
+                details.push(`✨ <strong>천간합(${STEM_COMBINATIONS[stemPair1] || STEM_COMBINATIONS[stemPair2]})</strong>: 첫눈에 서로에게 끌리는 운명적 일간 결합입니다.`);
             }
 
-            // 지지합 (일지의 육합)
             const branchPair1 = p1.dayBranch + p2.dayBranch;
             const branchPair2 = p2.dayBranch + p1.dayBranch;
             if (BRANCH_COMBINATIONS[branchPair1] || BRANCH_COMBINATIONS[branchPair2]) {
                 score += 12;
-                details.push(`💕 <strong>일지 육합(${BRANCH_COMBINATIONS[branchPair1] || BRANCH_COMBINATIONS[branchPair2]})</strong>: 속마음과 가치관이 잘 맞아서 함께 있으면 편안한 조합입니다.`);
+                details.push(`💕 <strong>일지 육합(${BRANCH_COMBINATIONS[branchPair1] || BRANCH_COMBINATIONS[branchPair2]})</strong>: 속마음과 가치관이 잘 맞아서 편안한 조합입니다.`);
             }
 
-            // 충 (일지 충)
             if (BRANCH_CLASHES[branchPair1] || BRANCH_CLASHES[branchPair2]) {
                 score -= 10;
-                details.push(`⚡ <strong>일지 충(${BRANCH_CLASHES[branchPair1] || BRANCH_CLASHES[branchPair2]})</strong>: 성향 차이로 종종 의견 충돌이 일어날 수 있으니 대화와 양보가 필요합니다.`);
+                details.push(`⚡ <strong>일지 충(${BRANCH_CLASHES[branchPair1] || BRANCH_CLASHES[branchPair2]})</strong>: 성향 차이로 의견 충돌이 일어날 수 있으니 대화가 필요합니다.`);
             }
 
-            // 원진 (일지 원진)
             if (BRANCH_WONJIN[branchPair1] || BRANCH_WONJIN[branchPair2]) {
                 score -= 8;
-                details.push(`🥀 <strong>원진살(${BRANCH_WONJIN[branchPair1] || BRANCH_WONJIN[branchPair2]})</strong>: 미운 정 고운 정이 함께 들어 서운함이 생기기 쉬우므로 솔직한 표현이 중요합니다.`);
-            }
-
-            // 조후 (온습도 조화 분석)
-            const coldMonths = ['亥', '子', '丑'];
-            const hotMonths = ['巳', '午', '未'];
-
-            if ((coldMonths.includes(p1.monthBranch) && hotMonths.includes(p2.monthBranch)) ||
-                (hotMonths.includes(p1.monthBranch) && coldMonths.includes(p2.monthBranch))) {
-                score += 10;
-                details.push(`🌡️ <strong>조후(調候)의 완벽한 상생</strong>: 한쪽은 차갑고 한쪽은 따뜻하여 서로의 사주 기운과 마음을 온화하게 조율해 줍니다.`);
-            } else if (coldMonths.includes(p1.monthBranch) && coldMonths.includes(p2.monthBranch)) {
-                details.push(`❄️ <strong>조후 한랭(寒冷)</strong>: 두 분 모두 차가운 계절 기운을 가졌으므로 따뜻한 다정함과 표현을 자주 건네면 좋습니다.`);
-            } else if (hotMonths.includes(p1.monthBranch) && hotMonths.includes(p2.monthBranch)) {
-                details.push(`🔥 <strong>조후 조열(燥熱)</strong>: 둘 다 열정이 넘치므로 다툼 시 잠시 냉각기를 가지는 지혜가 필요합니다.`);
+                details.push(`🥀 <strong>원진살(${BRANCH_WONJIN[branchPair1] || BRANCH_WONJIN[branchPair2]})</strong>: 서운함이 생기기 쉬우므로 솔직한 표현이 중요합니다.`);
             }
 
             score = Math.min(Math.max(score, 50), 99);
 
-            // 결과 화면 렌더링
             const display = document.getElementById('compatResultDisplay');
             display.classList.remove('hidden');
 
@@ -728,7 +970,7 @@
         }
 
         /* ==========================================================================
-           7. NAVIGATION & UTILS
+           6. NAVIGATION & UTILS
            ========================================================================== */
         function switchTab(tab) {
             document.getElementById('sajuSection').classList.add('hidden');
@@ -740,18 +982,18 @@
             const btnC = document.getElementById('navCompatBtn');
 
             [btnS, btnQ, btnC].forEach(b => {
-                b.className = "px-5 py-2 rounded-full font-bold text-base sm:text-lg transition-all duration-300 text-pink-700 hover:bg-pink-200";
+                b.className = "px-4 sm:px-5 py-2 rounded-full font-bold text-sm sm:text-base transition-all duration-300 text-pink-700 hover:bg-pink-200";
             });
 
             if (tab === 'saju') {
                 document.getElementById('sajuSection').classList.remove('hidden');
-                btnS.className = "px-5 py-2 rounded-full font-bold text-base sm:text-lg transition-all duration-300 bg-pink-500 text-white shadow-md";
+                btnS.className = "px-4 sm:px-5 py-2 rounded-full font-bold text-sm sm:text-base transition-all duration-300 bg-pink-500 text-white shadow-md";
             } else if (tab === 'quiz') {
                 document.getElementById('quizSection').classList.remove('hidden');
-                btnQ.className = "px-5 py-2 rounded-full font-bold text-base sm:text-lg transition-all duration-300 bg-yellow-500 text-white shadow-md";
+                btnQ.className = "px-4 sm:px-5 py-2 rounded-full font-bold text-sm sm:text-base transition-all duration-300 bg-amber-500 text-white shadow-md";
             } else if (tab === 'compat') {
                 document.getElementById('compatSection').classList.remove('hidden');
-                btnC.className = "px-5 py-2 rounded-full font-bold text-base sm:text-lg transition-all duration-300 bg-purple-500 text-white shadow-md";
+                btnC.className = "px-4 sm:px-5 py-2 rounded-full font-bold text-sm sm:text-base transition-all duration-300 bg-purple-500 text-white shadow-md";
             }
         }
 
