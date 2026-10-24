@@ -43,7 +43,7 @@
 
     <!-- Header Section -->
     <header class="text-center pt-8 pb-4 px-4 max-w-2xl mx-auto">
-        <img src="https://i.imgur.com/q8OKkp2.png" alt="치이카와" referrerpolicy="no-referrer" class="mx-auto mb-3 max-h-40 sm:max-h-48 object-contain" onerror="this.style.display='none'">
+        <img src="https://i.imgur.com/q8OKkp2.png" alt="치이카와" referrerpolicy="no-referrer" class="mx-auto mb-3 max-h-40 sm:max-h-48 object-contain" onerror="imgFallback(this)">
         <h1 class="text-4xl sm:text-5xl emph text-pink-600 font-gaegu tracking-wide drop-shadow-sm mb-2">
             치이카와 사주궁합 테스트
         </h1>
@@ -325,6 +325,8 @@
                 </div>
             </div>
 
+            <p class="text-xs text-gray-500 text-center mb-4">※ 일간끼리의 합·상생·충·상극을 기준으로 자동 계산한 결과예요 (1:1 궁합과 같은 기준). 천간충 상대가 없으면 모두 화목해!</p>
+
             <div class="flex flex-col sm:flex-row gap-3">
                 <button onclick="shareResult()" class="chii-btn flex-1 py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-2xl flex items-center justify-center gap-2 text-lg">
                     <i class="fa-solid fa-share-nodes"></i> 결과 공유하기
@@ -405,10 +407,6 @@
                 traits: ['다재다능', '감성파', '수다쟁이', '낭만가'],
                 desc: '비처럼 촉촉한 계수(癸水)의 기운으로 감수성이 풍부하고 언변이 뛰어납니다. 다정한 보살핌과 긍정적이고 밝은 에너지로 친구들을 늘 챙기는 기분 좋은 낭만파입니다.',
                 sajuFeature: '수(水) 기운 우세 / 식상생재 (총명함과 사교성)',
-                romanticBest: '시사 (따뜻하게 응원해주는 안정적 케미)',
-                romanticWorst: '랏코 (단호한 조언에 살짝 원칙적 부담감을 느낌)',
-                workBest: '초록이 (밝은 에너지가 통해 함께 분위기를 만드는 조화)',
-                workWorst: '우사기 (어디로 튈지 모르는 행동에 정신없음)'
             },
             usagi: {
                 id: 'usagi',
@@ -419,10 +417,6 @@
                 traits: ['마이페이스', '해결사', '자유영혼', '돌파력'],
                 desc: '목(木)의 강렬한 생명력과 자유로운 기운을 가지고 있습니다. 남들의 시선에 매이지 않으며 위기 상황에서 놀라운 집중력과 실력으로 문제를 해결합니다.',
                 sajuFeature: '목(木) 기운 우세 / 비겁·역마 (압도적 자유와 돌파력)',
-                romanticBest: '모몬가 (서로의 엉뚱한 매력을 알아보는 콤비)',
-                romanticWorst: '시사 (너무 틀에 박힌 소리를 하면 답답해함)',
-                workBest: '랏코 (강한 실력자끼리 단숨에 미션 완수)',
-                workWorst: '치이카와 (겁이 많아서 속도 맞추기가 조금 힘듦)'
             },
             chiikawa: {
                 id: 'chiikawa',
@@ -433,10 +427,6 @@
                 traits: ['성장형', '순수함', '귀여움', '뚝심'],
                 desc: '포근한 기토(己土)처럼 모든 걸 품어 주는 순수한 사랑을 가졌습니다. 처음엔 겁이 많지만 끈기 있게 노력하여 결국엔 해내는 당찬 뚝심이 있는 귀염둥이입니다.',
                 sajuFeature: '토(土) 기운 우세 / 인성형 (순수한 매력과 수호운)',
-                romanticBest: '하치와레 (마음을 다정하게 공감해주는 상대)',
-                romanticWorst: '모몬가 (투정을 받아주다가 기가 빨릴 수 있음)',
-                workBest: '카니 (따뜻하게 챙겨주고 격려해주는 편안함)',
-                workWorst: '우사기 (갑작스러운 돌돌 행동에 쉽게 놀람)'
             },
             momonga: {
                 id: 'momonga',
@@ -447,10 +437,6 @@
                 traits: ['관심집중', '귀여운 떼쟁이', '매력왕', '화려함'],
                 desc: '화(火)의 화려함과 타고난 매력을 가졌습니다. 언제나 사랑받고 싶어 하며 귀여운 투정으로 주변 사람들의 관심과 예쁨을 끌어당기는 매력왕입니다.',
                 sajuFeature: '화(火) 기운 우세 / 도화·편인 (강렬한 존재감)',
-                romanticBest: '우사기 (자기 멋대로 해도 쿨하게 받아줌)',
-                romanticWorst: '치이카와 (반응이 진지해서 미안해짐)',
-                workBest: '시사 (불평하면서도 결국 받아주는 든든함)',
-                workWorst: '쿠리만쥬 (엄격하게 대하면 꼼짝 못함)'
             },
             shisa: {
                 id: 'shisa',
@@ -461,10 +447,6 @@
                 traits: ['성실함', '열정가', '노력파', '자격증러'],
                 desc: '불처럼 열정적이고 바른 생활을 지향하는 노력파입니다. 자격증 취득과 실력 향상을 위해 열렬히 노력하는 최고 성실파 캐릭터입니다.',
                 sajuFeature: '화토(火土) 상생 / 관재쌍전 (실속과 명예)',
-                romanticBest: '하치와레 (칭찬과 격려로 시너지를 얻음)',
-                romanticWorst: '우사기 (규칙을 안 지키면 답답함을 느낌)',
-                workBest: '쿠리만쥬 (일처리가 정확해 환상 호흡)',
-                workWorst: '모몬가 (자꾸 게으름을 피우면 챙기기 피곤함)'
             },
             rakko: {
                 id: 'rakko',
@@ -475,10 +457,6 @@
                 traits: ['카리스마', '반전매력', '리더십', '스윗함'],
                 desc: '금(金)기운의 단호함과 책임감을 지닌 실력자입니다. 엄격한 카리스마를 갖고 있지만 귀여운 디저트를 좋아하는 스윗한 반전 매력가입니다.',
                 sajuFeature: '금(金) 기운 우세 / 편관형 (절제력과 강한 리더십)',
-                romanticBest: '카니 (지친 마음을 따뜻하게 안아주는 치유형)',
-                romanticWorst: '하치와레 (너무 감성적이어서 조언이 잘 안 통함)',
-                workBest: '우사기 (어떤 고난도 완벽히 해결하는 강력 커플)',
-                workWorst: '고블린 (센 척하며 말을 안 들어 호흡이 안 맞음)'
             },
             kani: {
                 id: 'kani',
@@ -489,10 +467,6 @@
                 traits: ['배려심', '포용력', '세심함', '힐러'],
                 desc: '따뜻한 부드러움을 가진 힐러형 성향입니다. 친구들의 기분을 꼼꼼히 살피고 맞춰주는 온화하고 듬직한 위로의 소유자입니다.',
                 sajuFeature: '목수(木水) 상생 / 정인형 (온화함과 안식처)',
-                romanticBest: '랏코 (의지할 수 있는 든든한 리더형)',
-                romanticWorst: '모몬가 (요구가 넘쳐 지칠 수 있음)',
-                workBest: '치이카와 (서로 다정하게 격려하는 좋은 조합)',
-                workWorst: '우사기 (돌발 상황으로 고생할 수 있음)'
             },
             kurimanju: {
                 id: 'kurimanju',
@@ -503,10 +477,6 @@
                 traits: ['여유로움', '미식가', '든든함', '풍류'],
                 desc: '묵직한 토(土) 기운과 여유를 지녔습니다. 맛있는 음식과 한잔의 여유를 아는 미식가로, 평소엔 조용하지만 결정적일 때 챙겨주는 선배님 타입입니다.',
                 sajuFeature: '토(土) 기운 우세 / 식신형 (여유와 안정감)',
-                romanticBest: '시사 (맛있는 음식을 즐기며 나누는 호흡)',
-                romanticWorst: '모몬가 (귀찮게 굴면 피곤해함)',
-                workBest: '하치와레 (적당한 예의를 지키는 좋은 파트너)',
-                workWorst: '우사기 (정신없이 분위기를 어지럽힘)'
             },
             goblin: {
                 id: 'goblin',
@@ -517,10 +487,6 @@
                 traits: ['의리파', '먹보', '허세', '반전귀염'],
                 desc: '경금(庚金)처럼 단단하고 거칠어 보이지만, 한번 인정한 사람은 끝까지 따라가는 의리파예요. 맛있는 음식 앞에서는 누구보다 솔직하고, 센 척하다가도 은근히 허술한 면이 귀여운 반전 매력이에요.',
                 sajuFeature: '경금(庚金) 일간 / 강직함과 의리',
-                romanticBest: '랏코 (센 척 뒤의 속마음을 알아봐 주는 상대)',
-                romanticWorst: '하치와레 (감성적인 수다에 어색해서 말문이 막힘)',
-                workBest: '우사기 (둘 다 힘으로 밀어붙이는 돌파 콤비)',
-                workWorst: '시사 (규칙과 계획을 따지면 답답해함)'
             },
             green: {
                 id: 'green',
@@ -531,10 +497,6 @@
                 traits: ['리더', '싱어송라이터', '책임감', '무대체질'],
                 desc: '임수(壬水)의 큰 바다처럼 포용력 있는 파자마 파티즈의 리더예요. 노래와 춤을 직접 만들며 친구들을 이끌고, 관객이 없는 무대에서도 먼저 춤을 시작해 모두에게 용기를 주는 사람이에요. 히트곡에 대한 부담을 혼자 안고 가는 책임감도 있어요.',
                 sajuFeature: '임수(壬水) 일간 / 포용력과 리더십',
-                romanticBest: '카니 (힘든 마음을 다정하게 받아주는 상대)',
-                romanticWorst: '모몬가 (서로 무대의 주인공이 되려고 해서 부딪힘)',
-                workBest: '하치와레 (밝은 에너지로 함께 분위기를 만드는 파트너)',
-                workWorst: '쿠리만쥬 (연습보다 여유를 우선해 속도 차이가 남)'
             }
         };
 
@@ -682,10 +644,68 @@
             document.getElementById(textId).textContent = text;
             const box = document.getElementById(boxId);
             if (c) {
-                box.innerHTML = `<img src="${c.img}" alt="${c.name}" referrerpolicy="no-referrer" class="w-full h-full object-contain p-0.5" onerror="this.onerror=null;this.src='https://placehold.co/56x56/fbcfe8/be185d?text=${encodeURIComponent(c.name)}'">`;
+                box.innerHTML = `<img src="${c.img}" alt="${c.name}" referrerpolicy="no-referrer" class="w-full h-full object-contain p-0.5" onerror="imgFallback(this,'https://placehold.co/56x56/fbcfe8/be185d?text=${encodeURIComponent(c.name)}')">`;
             } else {
-                box.innerHTML = '';
+                box.innerHTML = '<span class="text-2xl">🌈</span>';
             }
+        }
+
+        // ---- 캐릭터 궁합 자동 계산: 1:1 궁합과 같은 일간 관계(합·충·상생·상극) 기준 ----
+        const ELEM_CTRL = { wood: 'earth', earth: 'water', water: 'fire', fire: 'metal', metal: 'wood' };
+        const STEM_ORDER = '甲乙丙丁戊己庚辛壬癸';
+        const STEM_OF_CHAR = {};
+        Object.keys(CHARACTER_BY_STEM).forEach(st => { STEM_OF_CHAR[CHARACTER_BY_STEM[st]] = st; });
+        const isYang = st => STEM_ORDER.indexOf(st) % 2 === 0;
+        const sName = st => stripHanja(STEM_NAMES[st]);
+
+        const MATCH_SCORE = {
+            love: { hap: 12, genToMe: 6, iGen: 6, same: 3, iCtrl: -4, ctrlMe: -5, chung: -8, pol: 1.5 },
+            work: { hap: 5, genToMe: 7, iGen: 6, same: 4, iCtrl: -3, ctrlMe: -6, chung: -8, pol: 1 }
+        };
+        const MATCH_TAIL = {
+            love: { hap: '연애에서 끌림이 가장 커요', genToMe: '상대가 힘이 되어 주는 다정한 조합', iGen: '내가 챙겨 주며 사랑을 주는 조합', same: '말이 잘 통하지만 닮은 약점도 커져요', iCtrl: '내가 눌러서 상대가 지치기 쉬워요', ctrlMe: '내가 눌린다고 느끼기 쉬워요', chung: '의견이 부딪히면 크게 번지기 쉬워요' },
+            work: { hap: '호흡이 잘 맞는 조합', genToMe: '일할 때 든든하게 받쳐 줘요', iGen: '내가 챙겨 주며 팀워크가 좋아져요', same: '일하는 방식이 비슷해 편해요', iCtrl: '내가 밀어붙이면 상대가 지칠 수 있어요', ctrlMe: '압박을 느껴 피곤해지기 쉬워요', chung: '일하는 방식이 정면으로 부딪혀요' }
+        };
+
+        function stemRelation(a, b) {
+            const hap = STEM_COMBINATIONS[a + b] || STEM_COMBINATIONS[b + a];
+            const clash = STEM_CLASH[a + b] || STEM_CLASH[b + a];
+            const eA = STEM_ELEMENTS[a], eB = STEM_ELEMENTS[b];
+            const diffPol = isYang(a) !== isYang(b);
+            if (hap) return { type: 'hap', diffPol, text: `${stripHanja(hap)}으로 서로 자연스럽게 끌리는 천간합` };
+            if (clash) return { type: 'chung', diffPol, text: `${clash}으로 정면충돌하는 천간충` };
+            if (eA === eB) return { type: 'same', diffPol, text: `같은 ${stripHanja(ELEM_INFO[eA].name)} 일간이라 가치관이 닮은 비화` };
+            if (ELEM_GEN[eA] === eB) return { type: 'iGen', diffPol, text: `나의 ${sName(a)} 기운이 상대를 생해주는 상생` };
+            if (ELEM_GEN[eB] === eA) return { type: 'genToMe', diffPol, text: `상대의 ${sName(b)} 기운이 나를 생해주는 상생` };
+            if (ELEM_CTRL[eA] === eB) return { type: 'iCtrl', diffPol, text: `나의 ${sName(a)} 기운이 상대를 극하는 상극` };
+            return { type: 'ctrlMe', diffPol, text: `상대의 ${sName(b)} 기운이 나를 극하는 상극` };
+        }
+
+        function computeMatches(char) {
+            const a = STEM_OF_CHAR[char.id];
+            const cands = Object.keys(CHARACTERS).filter(id => id !== char.id).map(id => {
+                const b = STEM_OF_CHAR[id];
+                return { id, rel: stemRelation(a, b), order: STEM_ORDER.indexOf(b) };
+            });
+            const score = (mode, c) => MATCH_SCORE[mode][c.rel.type] + (c.rel.diffPol ? MATCH_SCORE[mode].pol : 0);
+            const fmt = (mode, c) => `${CHARACTERS[c.id].name} (${c.rel.text} · ${MATCH_TAIL[mode][c.rel.type]})`;
+            const sorted = (mode, list, best) => list.slice().sort((x, y) => (best ? score(mode, y) - score(mode, x) : score(mode, x) - score(mode, y)) || x.order - y.order);
+
+            const harmony = '모두 화목해! (천간충 상대가 없어서 부딪힐 일이 없어요)';
+            const chungC = cands.find(c => c.rel.type === 'chung');
+            let romanticWorst = harmony, workWorst = harmony;
+            if (chungC) {
+                // 연인: 천간충 상대 / 동료: 충·합을 제외하고 가장 불편한 상극 상대 (두 칸이 서로 다른 캐릭터가 되도록)
+                romanticWorst = fmt('love', chungC);
+                const rest = cands.filter(c => c.rel.type !== 'chung' && c.rel.type !== 'hap');
+                workWorst = fmt('work', sorted('work', rest, false)[0]);
+            }
+            return {
+                romanticBest: fmt('love', sorted('love', cands, true)[0]),
+                romanticWorst,
+                workBest: fmt('work', sorted('work', cands, true)[0]),
+                workWorst
+            };
         }
 
         function renderSajuResult(data) {
@@ -713,7 +733,7 @@
                     ${data.shared ? '이 결과와 닮은 먼작귀 캐릭터' : '나와 닮은 먼작귀 캐릭터'}
                 </div>
                 <div class="w-32 h-32 sm:w-40 sm:h-40 mx-auto mb-3 rounded-full bg-white p-2 border-4 border-pink-200 shadow-inner flex items-center justify-center overflow-hidden">
-                    <img src="${char.img}" alt="${char.name}" referrerpolicy="no-referrer" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/160x160/fbcfe8/be185d?text=${encodeURIComponent(char.name)}'">
+                    <img src="${char.img}" alt="${char.name}" referrerpolicy="no-referrer" class="w-full h-full object-contain" onerror="imgFallback(this,'https://placehold.co/160x160/fbcfe8/be185d?text=${encodeURIComponent(char.name)}')">
                 </div>
                 <h3 class="text-3xl sm:text-4xl emph text-pink-600 font-gaegu mb-1">${char.name}</h3>
                 <p class="text-base sm:text-lg text-gray-600 mb-3">${char.title}</p>
@@ -775,10 +795,11 @@
                 `;
             }
 
-            fillMatch('romanticBest', 'romanticBestImg', char.romanticBest);
-            fillMatch('romanticWorst', 'romanticWorstImg', char.romanticWorst);
-            fillMatch('workBest', 'workBestImg', char.workBest);
-            fillMatch('workWorst', 'workWorstImg', char.workWorst);
+            const m = computeMatches(char);
+            fillMatch('romanticBest', 'romanticBestImg', m.romanticBest);
+            fillMatch('romanticWorst', 'romanticWorstImg', m.romanticWorst);
+            fillMatch('workBest', 'workBestImg', m.workBest);
+            fillMatch('workWorst', 'workWorstImg', m.workWorst);
 
             document.getElementById('resultSection').classList.remove('hidden');
             fitButtons();
@@ -980,7 +1001,7 @@
                 <div class="flex items-center justify-center gap-4 sm:gap-6 text-center mb-5">
                     <div class="flex flex-col items-center">
                         <div class="w-20 h-20 rounded-full bg-white p-1 border-2 border-pink-300 shadow-md mb-1 flex items-center justify-center overflow-hidden">
-                            <img src="${c1.img}" alt="${c1.name}" referrerpolicy="no-referrer" class="w-16 h-16 object-contain" onerror="this.src='https://placehold.co/80x80/fbcfe8/be185d?text=${encodeURIComponent(c1.name)}'">
+                            <img src="${c1.img}" alt="${c1.name}" referrerpolicy="no-referrer" class="w-16 h-16 object-contain" onerror="imgFallback(this,'https://placehold.co/80x80/fbcfe8/be185d?text=${encodeURIComponent(c1.name)}')">
                         </div>
                         <p class="text-base text-gray-800">${c1.name}</p>
                         <span class="text-xs text-purple-600">나 · ${dayInfo(A)}</span>
@@ -993,7 +1014,7 @@
 
                     <div class="flex flex-col items-center">
                         <div class="w-20 h-20 rounded-full bg-white p-1 border-2 border-purple-300 shadow-md mb-1 flex items-center justify-center overflow-hidden">
-                            <img src="${c2.img}" alt="${c2.name}" referrerpolicy="no-referrer" class="w-16 h-16 object-contain" onerror="this.src='https://placehold.co/80x80/e9d5ff/6b21a8?text=${encodeURIComponent(c2.name)}'">
+                            <img src="${c2.img}" alt="${c2.name}" referrerpolicy="no-referrer" class="w-16 h-16 object-contain" onerror="imgFallback(this,'https://placehold.co/80x80/e9d5ff/6b21a8?text=${encodeURIComponent(c2.name)}')">
                         </div>
                         <p class="text-base text-gray-800">${c2.name}</p>
                         <span class="text-xs text-purple-600">상대 · ${dayInfo(B)}</span>
@@ -1045,6 +1066,20 @@
         }
 
         // 버튼 글자가 버튼 너비를 넘으면 한 줄에 맞게 글자 크기를 동적으로 줄임
+function imgFallback(img, finalSrc) {
+            const exts = ['jpg', 'jpeg', 'gif', 'webp'];
+            const i = parseInt(img.dataset.i || '0', 10);
+            if (i < exts.length && /i\.imgur\.com/.test(img.src)) {
+                img.dataset.i = i + 1;
+                img.src = img.src.replace(/\.\w+$/, '.' + exts[i]);
+            } else if (finalSrc) {
+                img.onerror = null;
+                img.src = finalSrc;
+            } else {
+                img.style.display = 'none';
+            }
+        }
+
         function fitButtons() {
             const btns = document.querySelectorAll('button');
             btns.forEach(b => { b.style.fontSize = ''; });
