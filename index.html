@@ -17,7 +17,10 @@
         }
         * {
             font-family: 'NostalgicMyoeunHeullim', 'Gaegu', 'Gamja Flower', cursive, sans-serif !important;
+            font-synthesis: none !important;
         }
+        /* 강조(핵심 키워드·결과 이름·점수)만 굵게 */
+        strong, .emph { font-weight: 700; font-synthesis: weight !important; }
         select, option, input, button {
             font-family: 'NostalgicMyoeunHeullim', 'Gaegu', 'Gamja Flower', cursive, sans-serif !important;
         }
@@ -37,23 +40,23 @@
 
     <!-- Header Section -->
     <header class="text-center pt-8 pb-4 px-4 max-w-2xl mx-auto">
-        <h1 class="text-4xl sm:text-5xl font-extrabold text-pink-600 font-gaegu tracking-wide drop-shadow-sm mb-2">
+        <h1 class="text-4xl sm:text-5xl emph text-pink-600 font-gaegu tracking-wide drop-shadow-sm mb-2">
             ✨ 치이카와 정밀 사주 & 궁합 테스트 ✨
         </h1>
-        <p class="text-base sm:text-lg text-gray-600 font-bold">
+        <p class="text-base sm:text-lg text-gray-600">
             정밀 만세력 알고리즘으로 나와 닮은 먼작귀 캐릭터와 십성·오행 궁합을 알아봐요!
         </p>
 
         <!-- Navigation Tabs -->
         <nav class="flex justify-center gap-2 mt-6 bg-pink-100/70 p-1.5 rounded-full border border-pink-200">
-            <button id="navSajuBtn" onclick="switchTab('saju')" class="px-4 sm:px-5 py-2 rounded-full font-bold text-sm sm:text-base transition-all duration-300 bg-pink-500 text-white shadow-md">
+            <button id="navSajuBtn" onclick="switchTab('saju')" class="px-4 sm:px-5 py-2 rounded-full text-sm sm:text-base transition-all duration-300 bg-pink-500 text-white shadow-md">
                 🔮 만세력 사주
             </button>
-            <button id="navQuizBtn" onclick="switchTab('quiz')" class="px-4 sm:px-5 py-2 rounded-full font-bold text-sm sm:text-base transition-all duration-300 text-pink-700 hover:bg-pink-200">
+            <button id="navQuizBtn" onclick="switchTab('quiz')" class="px-4 sm:px-5 py-2 rounded-full text-sm sm:text-base transition-all duration-300 text-pink-700 hover:bg-pink-200">
                 📝 심리 테스트
             </button>
-            <button id="navCompatBtn" onclick="switchTab('compat')" class="px-4 sm:px-5 py-2 rounded-full font-bold text-sm sm:text-base transition-all duration-300 text-pink-700 hover:bg-pink-200">
-                💕 정밀 1:1 사주 궁합
+            <button id="navCompatBtn" onclick="switchTab('compat')" class="px-4 sm:px-5 py-2 rounded-full text-sm sm:text-base transition-all duration-300 text-pink-700 hover:bg-pink-200">
+                💕 사주 궁합
             </button>
         </nav>
     </header>
@@ -62,37 +65,37 @@
 
         <!-- 1. Saju Input Section -->
         <section id="sajuSection" class="bg-white/90 backdrop-blur rounded-3xl p-6 shadow-xl border-2 border-pink-200 mb-8">
-            <h2 class="text-2xl sm:text-3xl font-bold text-pink-600 font-gaegu mb-4 flex items-center gap-2">
+            <h2 class="text-2xl sm:text-3xl text-pink-600 font-gaegu mb-4 flex items-center gap-2">
                 <i class="fa-solid fa-calendar-check text-pink-400"></i> 생년월일시 입력 (정밀 만세력)
             </h2>
             <form onsubmit="calculateSaju(event)" class="space-y-4">
                 <div class="flex gap-4 items-center justify-center bg-pink-50 p-3 rounded-2xl border border-pink-100">
-                    <label class="flex items-center gap-1.5 font-bold text-base text-gray-700 cursor-pointer">
+                    <label class="flex items-center gap-1.5 text-base text-gray-700 cursor-pointer">
                         <input type="radio" name="calendarType" value="solar" checked class="accent-pink-500"> 양력
                     </label>
-                    <label class="flex items-center gap-1.5 font-bold text-base text-gray-700 cursor-pointer">
+                    <label class="flex items-center gap-1.5 text-base text-gray-700 cursor-pointer">
                         <input type="radio" name="calendarType" value="lunar" class="accent-pink-500"> 음력
                     </label>
                 </div>
 
                 <div class="grid grid-cols-3 gap-2">
                     <div>
-                        <label class="block text-sm font-bold text-gray-600 mb-1">년도</label>
-                        <select id="birthYear" class="w-full p-2.5 rounded-xl border border-pink-200 font-bold text-base text-center focus:outline-pink-400 cursor-pointer bg-white" required></select>
+                        <label class="block text-sm text-gray-600 mb-1">년도</label>
+                        <select id="birthYear" class="w-full p-2.5 rounded-xl border border-pink-200 text-base text-center focus:outline-pink-400 cursor-pointer bg-white" required></select>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-gray-600 mb-1">월</label>
-                        <select id="birthMonth" class="w-full p-2.5 rounded-xl border border-pink-200 font-bold text-base text-center focus:outline-pink-400 cursor-pointer bg-white" required></select>
+                        <label class="block text-sm text-gray-600 mb-1">월</label>
+                        <select id="birthMonth" class="w-full p-2.5 rounded-xl border border-pink-200 text-base text-center focus:outline-pink-400 cursor-pointer bg-white" required></select>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-gray-600 mb-1">일</label>
-                        <select id="birthDay" class="w-full p-2.5 rounded-xl border border-pink-200 font-bold text-base text-center focus:outline-pink-400 cursor-pointer bg-white" required></select>
+                        <label class="block text-sm text-gray-600 mb-1">일</label>
+                        <select id="birthDay" class="w-full p-2.5 rounded-xl border border-pink-200 text-base text-center focus:outline-pink-400 cursor-pointer bg-white" required></select>
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-bold text-gray-600 mb-1">태어난 시간 (선택)</label>
-                    <select id="birthHour" class="w-full p-2.5 rounded-xl border border-pink-200 font-bold text-base text-center focus:outline-pink-400 cursor-pointer bg-white">
+                    <label class="block text-sm text-gray-600 mb-1">태어난 시간 (선택)</label>
+                    <select id="birthHour" class="w-full p-2.5 rounded-xl border border-pink-200 text-base text-center focus:outline-pink-400 cursor-pointer bg-white">
                         <option value="-1">모름 / 미정</option>
                         <option value="0">자시 (23:30 ~ 01:29)</option>
                         <option value="2">축시 (01:30 ~ 03:29)</option>
@@ -109,26 +112,26 @@
                     </select>
                 </div>
 
-                <button type="submit" class="w-full py-3.5 bg-pink-500 hover:bg-pink-600 text-white font-extrabold rounded-2xl shadow-lg shadow-pink-200 transition-all text-xl font-gaegu tracking-wider">
-                    ✨ 내 치이카와 캐릭터 분석하기 ✨
+                <button type="submit" class="w-full py-3.5 bg-pink-500 hover:bg-pink-600 text-white rounded-2xl shadow-lg shadow-pink-200 transition-all text-xl font-gaegu tracking-wider">
+                    ✨ 내 캐릭터 찾기 ✨
                 </button>
             </form>
         </section>
 
         <!-- 2. Quiz Section -->
         <section id="quizSection" class="hidden bg-white/90 backdrop-blur rounded-3xl p-6 shadow-xl border-2 border-yellow-200 mb-8">
-            <h2 class="text-2xl sm:text-3xl font-bold text-amber-600 font-gaegu mb-4 flex items-center gap-2">
+            <h2 class="text-2xl sm:text-3xl text-amber-600 font-gaegu mb-4 flex items-center gap-2">
                 <i class="fa-solid fa-list-check text-amber-400"></i> 사주 몰라도 OK! 성향 테스트
             </h2>
             <div id="quizContainer" class="space-y-4 mb-6"></div>
-            <button onclick="submitQuiz()" class="w-full py-3.5 bg-amber-500 hover:bg-amber-600 text-white font-extrabold rounded-2xl shadow-lg shadow-amber-200 transition-all text-xl font-gaegu tracking-wider">
-                ✨ 테스트 결과 확인하기 ✨
+            <button onclick="submitQuiz()" class="w-full py-3.5 bg-amber-500 hover:bg-amber-600 text-white rounded-2xl shadow-lg shadow-amber-200 transition-all text-xl font-gaegu tracking-wider">
+                ✨ 결과 보기 ✨
             </button>
         </section>
 
         <!-- 3. Compatibility Section -->
         <section id="compatSection" class="hidden bg-white/90 backdrop-blur rounded-3xl p-6 shadow-xl border-2 border-purple-200 mb-8">
-            <h2 class="text-2xl sm:text-3xl font-bold text-purple-600 font-gaegu mb-4 flex items-center gap-2">
+            <h2 class="text-2xl sm:text-3xl text-purple-600 font-gaegu mb-4 flex items-center gap-2">
                 <i class="fa-solid fa-heart text-purple-400"></i> 상대방 생년월일시 정밀 사주 궁합
             </h2>
             
@@ -136,14 +139,14 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-purple-50 p-4 rounded-2xl border border-purple-100">
                     <!-- Person A (내 사주) -->
                     <div>
-                        <h3 class="font-extrabold text-purple-700 text-lg mb-2">👤 내 생년월일시</h3>
+                        <h3 class=" text-purple-700 text-lg mb-2">👤 내 생년월일시</h3>
                         <div class="grid grid-cols-3 gap-1.5 mb-2">
-                            <select id="compatYear1" class="p-2 rounded-xl border border-purple-200 text-sm font-bold bg-white"></select>
-                            <select id="compatMonth1" class="p-2 rounded-xl border border-purple-200 text-sm font-bold bg-white"></select>
-                            <select id="compatDay1" class="p-2 rounded-xl border border-purple-200 text-sm font-bold bg-white"></select>
+                            <select id="compatYear1" class="p-2 rounded-xl border border-purple-200 text-sm bg-white"></select>
+                            <select id="compatMonth1" class="p-2 rounded-xl border border-purple-200 text-sm bg-white"></select>
+                            <select id="compatDay1" class="p-2 rounded-xl border border-purple-200 text-sm bg-white"></select>
                         </div>
                         <div class="mb-2">
-                            <select id="compatHour1" class="w-full p-2 rounded-xl border border-purple-200 text-xs font-bold bg-white">
+                            <select id="compatHour1" class="w-full p-2 rounded-xl border border-purple-200 text-xs bg-white">
                                 <option value="-1">태어난 시간 모름</option>
                                 <option value="0">자시 (23:30 ~ 01:29)</option>
                                 <option value="2">축시 (01:30 ~ 03:29)</option>
@@ -159,7 +162,7 @@
                                 <option value="22">해시 (21:30 ~ 23:29)</option>
                             </select>
                         </div>
-                        <div class="flex gap-3 text-xs font-bold text-gray-600">
+                        <div class="flex gap-3 text-xs text-gray-600">
                             <label><input type="radio" name="compatCal1" value="solar" checked class="accent-purple-500"> 양력</label>
                             <label><input type="radio" name="compatCal1" value="lunar" class="accent-purple-500"> 음력</label>
                         </div>
@@ -167,14 +170,14 @@
 
                     <!-- Person B (상대방 사주) -->
                     <div>
-                        <h3 class="font-extrabold text-purple-700 text-lg mb-2">❤️ 상대방 생년월일시</h3>
+                        <h3 class=" text-purple-700 text-lg mb-2">❤️ 상대방 생년월일시</h3>
                         <div class="grid grid-cols-3 gap-1.5 mb-2">
-                            <select id="compatYear2" class="p-2 rounded-xl border border-purple-200 text-sm font-bold bg-white"></select>
-                            <select id="compatMonth2" class="p-2 rounded-xl border border-purple-200 text-sm font-bold bg-white"></select>
-                            <select id="compatDay2" class="p-2 rounded-xl border border-purple-200 text-sm font-bold bg-white"></select>
+                            <select id="compatYear2" class="p-2 rounded-xl border border-purple-200 text-sm bg-white"></select>
+                            <select id="compatMonth2" class="p-2 rounded-xl border border-purple-200 text-sm bg-white"></select>
+                            <select id="compatDay2" class="p-2 rounded-xl border border-purple-200 text-sm bg-white"></select>
                         </div>
                         <div class="mb-2">
-                            <select id="compatHour2" class="w-full p-2 rounded-xl border border-purple-200 text-xs font-bold bg-white">
+                            <select id="compatHour2" class="w-full p-2 rounded-xl border border-purple-200 text-xs bg-white">
                                 <option value="-1">태어난 시간 모름</option>
                                 <option value="0">자시 (23:30 ~ 01:29)</option>
                                 <option value="2">축시 (01:30 ~ 03:29)</option>
@@ -190,15 +193,15 @@
                                 <option value="22">해시 (21:30 ~ 23:29)</option>
                             </select>
                         </div>
-                        <div class="flex gap-3 text-xs font-bold text-gray-600">
+                        <div class="flex gap-3 text-xs text-gray-600">
                             <label><input type="radio" name="compatCal2" value="solar" checked class="accent-purple-500"> 양력</label>
                             <label><input type="radio" name="compatCal2" value="lunar" class="accent-purple-500"> 음력</label>
                         </div>
                     </div>
                 </div>
 
-                <button type="submit" class="w-full py-3 bg-purple-500 hover:bg-purple-600 text-white font-extrabold rounded-2xl shadow-md transition-all text-xl font-gaegu">
-                    ✨ 두 사람의 정밀 사주 & 캐릭터 궁합 분석하기 ✨
+                <button type="submit" class="w-full py-3 bg-purple-500 hover:bg-purple-600 text-white rounded-2xl shadow-md transition-all text-xl font-gaegu">
+                    💕 우리 궁합 보기
                 </button>
             </form>
 
@@ -207,7 +210,7 @@
 
         <!-- Result Display Section -->
         <section id="resultSection" class="hidden bg-white/90 backdrop-blur rounded-3xl p-6 shadow-xl border-2 border-pink-300 mb-8">
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-pink-600 font-gaegu text-center mb-6">
+            <h2 id="resultTitle" class="text-3xl sm:text-4xl text-pink-600 font-gaegu text-center mb-6">
                 🔮 정밀 사주 & 캐릭터 분석 결과
             </h2>
 
@@ -218,100 +221,100 @@
             <!-- Key Summary Card: Heavenly Stem, Dominant Element, and Ten Gods (십성) -->
             <div id="stemAndElementSummary" class="mb-6 p-4 rounded-2xl bg-gradient-to-r from-pink-50 via-purple-50 to-pink-50 border-2 border-pink-200 grid grid-cols-3 gap-2 text-center shadow-sm">
                 <div>
-                    <span class="block text-xs sm:text-sm font-bold text-gray-500 mb-0.5">나의 일간</span>
-                    <span id="summaryDayMaster" class="text-xl sm:text-2xl font-black text-pink-600 font-gaegu">--</span>
-                    <span id="summaryDayMasterDesc" class="block text-[11px] sm:text-xs font-bold text-gray-600 mt-0.5">--</span>
+                    <span class="block text-xs sm:text-sm text-gray-500 mb-0.5">나의 일간</span>
+                    <span id="summaryDayMaster" class="text-xl sm:text-2xl emph text-pink-600 font-gaegu">--</span>
+                    <span id="summaryDayMasterDesc" class="block text-[11px] sm:text-xs text-gray-600 mt-0.5">--</span>
                 </div>
                 <div class="border-x border-pink-200 px-1">
-                    <span class="block text-xs sm:text-sm font-bold text-gray-500 mb-0.5">가장 발달한 십성</span>
-                    <span id="summaryTenGod" class="text-xl sm:text-2xl font-black text-amber-600 font-gaegu">--</span>
-                    <span id="summaryTenGodDesc" class="block text-[11px] sm:text-xs font-bold text-gray-600 mt-0.5">--</span>
+                    <span class="block text-xs sm:text-sm text-gray-500 mb-0.5">가장 발달한 십성</span>
+                    <span id="summaryTenGod" class="text-xl sm:text-2xl emph text-amber-600 font-gaegu">--</span>
+                    <span id="summaryTenGodDesc" class="block text-[11px] sm:text-xs text-gray-600 mt-0.5">--</span>
                 </div>
                 <div>
-                    <span class="block text-xs sm:text-sm font-bold text-gray-500 mb-0.5">메인 오행 기운</span>
-                    <span id="summaryDominantElem" class="text-xl sm:text-2xl font-black text-purple-600 font-gaegu">--</span>
-                    <span id="summaryDominantElemDesc" class="block text-[11px] sm:text-xs font-bold text-gray-600 mt-0.5">--</span>
+                    <span class="block text-xs sm:text-sm text-gray-500 mb-0.5">메인 오행 기운</span>
+                    <span id="summaryDominantElem" class="text-xl sm:text-2xl emph text-purple-600 font-gaegu">--</span>
+                    <span id="summaryDominantElemDesc" class="block text-[11px] sm:text-xs text-gray-600 mt-0.5">--</span>
                 </div>
             </div>
 
             <!-- Four Pillars Display -->
             <div id="pillarsContainer" class="hidden mb-6 bg-pink-50/80 p-4 rounded-2xl border border-pink-200">
-                <h3 class="text-sm font-extrabold text-pink-700 uppercase tracking-widest text-center mb-3">나의 사주 팔자 (四柱八字)</h3>
+                <h3 class="text-sm text-pink-700 uppercase tracking-widest text-center mb-3">나의 사주 팔자 (四柱八字)</h3>
                 <div class="grid grid-cols-4 gap-2 text-center">
                     <div class="bg-white p-2 rounded-xl shadow-sm border border-pink-100">
-                        <span class="block text-xs text-gray-400 font-bold">시주(時)</span>
-                        <span id="pillarHour" class="text-xl font-black text-gray-800 font-gaegu">--</span>
+                        <span class="block text-xs text-gray-400">시주(時)</span>
+                        <span id="pillarHour" class="text-xl emph text-gray-800 font-gaegu">--</span>
                     </div>
                     <div class="bg-white p-2 rounded-xl shadow-sm border border-pink-100">
-                        <span class="block text-xs text-gray-400 font-bold">일주(日)</span>
-                        <span id="pillarDay" class="text-xl font-black text-pink-600 font-gaegu">--</span>
+                        <span class="block text-xs text-gray-400">일주(日)</span>
+                        <span id="pillarDay" class="text-xl emph text-pink-600 font-gaegu">--</span>
                     </div>
                     <div class="bg-white p-2 rounded-xl shadow-sm border border-pink-100">
-                        <span class="block text-xs text-gray-400 font-bold">월주(月)</span>
-                        <span id="pillarMonth" class="text-xl font-black text-gray-800 font-gaegu">--</span>
+                        <span class="block text-xs text-gray-400">월주(月)</span>
+                        <span id="pillarMonth" class="text-xl emph text-gray-800 font-gaegu">--</span>
                     </div>
                     <div class="bg-white p-2 rounded-xl shadow-sm border border-pink-100">
-                        <span class="block text-xs text-gray-400 font-bold">년주(年)</span>
-                        <span id="pillarYear" class="text-xl font-black text-gray-800 font-gaegu">--</span>
+                        <span class="block text-xs text-gray-400">년주(年)</span>
+                        <span id="pillarYear" class="text-xl emph text-gray-800 font-gaegu">--</span>
                     </div>
                 </div>
             </div>
 
             <!-- Five Elements Bar Chart -->
-            <div class="mb-6 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
+            <div id="elemChartBox" class="mb-6 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
                 <div class="flex justify-between items-center mb-3">
-                    <h3 class="text-base font-bold text-gray-700">오행(五行) 기운 분포</h3>
-                    <span id="dominantElemBadge" class="text-xs sm:text-sm font-bold px-2.5 py-1 bg-pink-100 text-pink-700 rounded-full"></span>
+                    <h3 class="text-base text-gray-700">오행(五行) 기운 분포</h3>
+                    <span id="dominantElemBadge" class="text-xs sm:text-sm px-2.5 py-1 bg-pink-100 text-pink-700 rounded-full"></span>
                 </div>
                 <div id="elemBars" class="space-y-3">
                 </div>
             </div>
 
             <!-- Ten Gods & Saju Note Box -->
-            <div id="sajuNoteBox" class="mb-8 p-4 bg-blue-50/80 rounded-2xl border border-blue-200 text-sm sm:text-base text-blue-900 leading-relaxed font-bold">
+            <div id="sajuNoteBox" class="mb-8 p-4 bg-blue-50/80 rounded-2xl border border-blue-200 text-sm sm:text-base text-blue-900 leading-relaxed">
             </div>
 
             <!-- Compatibility Report -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <div class="p-5 bg-rose-50 rounded-2xl border border-rose-200">
-                    <h4 class="font-bold text-rose-700 font-gaegu text-2xl mb-3 border-b border-rose-200 pb-1 flex items-center gap-1.5">
+                    <h4 class=" text-rose-700 font-gaegu text-2xl mb-3 border-b border-rose-200 pb-1 flex items-center gap-1.5">
                         <i class="fa-solid fa-heart text-rose-500"></i> 연애 궁합 리포트
                     </h4>
                     <div class="space-y-3">
                         <div class="bg-white/80 p-3 rounded-xl border border-rose-100 shadow-sm flex items-center gap-3">
                             <div id="romanticBestImg" class="w-14 h-14 rounded-full bg-white border-2 border-pink-200 overflow-hidden flex items-center justify-center shrink-0"></div>
                             <div>
-                                <span class="text-xs sm:text-sm font-bold text-rose-500 block">최고의 연인 추천</span>
-                                <p id="romanticBest" class="font-extrabold text-gray-800 text-base mt-0.5">--</p>
+                                <span class="text-xs sm:text-sm text-rose-500 block">최고의 연인 추천</span>
+                                <p id="romanticBest" class=" text-gray-800 text-base mt-0.5">--</p>
                             </div>
                         </div>
                         <div class="bg-white/60 p-3 rounded-xl border border-rose-100 flex items-center gap-3">
                             <div id="romanticWorstImg" class="w-14 h-14 rounded-full bg-white border-2 border-pink-200 overflow-hidden flex items-center justify-center shrink-0"></div>
                             <div>
-                                <span class="text-xs sm:text-sm font-bold text-gray-500 block">다툼 주의 연인</span>
-                                <p id="romanticWorst" class="font-bold text-gray-600 text-sm mt-0.5">--</p>
+                                <span class="text-xs sm:text-sm text-gray-500 block">다툼 주의 연인</span>
+                                <p id="romanticWorst" class=" text-gray-600 text-sm mt-0.5">--</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="p-5 bg-blue-50 rounded-2xl border border-blue-200">
-                    <h4 class="font-bold text-blue-700 font-gaegu text-2xl mb-3 border-b border-blue-200 pb-1 flex items-center gap-1.5">
+                    <h4 class=" text-blue-700 font-gaegu text-2xl mb-3 border-b border-blue-200 pb-1 flex items-center gap-1.5">
                         <i class="fa-solid fa-briefcase text-blue-500"></i> 파트너/동료 궁합 리포트
                     </h4>
                     <div class="space-y-3">
                         <div class="bg-white/80 p-3 rounded-xl border border-blue-100 shadow-sm flex items-center gap-3">
                             <div id="workBestImg" class="w-14 h-14 rounded-full bg-white border-2 border-pink-200 overflow-hidden flex items-center justify-center shrink-0"></div>
                             <div>
-                                <span class="text-xs sm:text-sm font-bold text-blue-500 block">최고의 환상 동료</span>
-                                <p id="workBest" class="font-extrabold text-gray-800 text-base mt-0.5">--</p>
+                                <span class="text-xs sm:text-sm text-blue-500 block">최고의 환상 동료</span>
+                                <p id="workBest" class=" text-gray-800 text-base mt-0.5">--</p>
                             </div>
                         </div>
                         <div class="bg-white/60 p-3 rounded-xl border border-blue-100 flex items-center gap-3">
                             <div id="workWorstImg" class="w-14 h-14 rounded-full bg-white border-2 border-pink-200 overflow-hidden flex items-center justify-center shrink-0"></div>
                             <div>
-                                <span class="text-xs sm:text-sm font-bold text-gray-500 block">맞지 않는 피곤한 동료</span>
-                                <p id="workWorst" class="font-bold text-gray-600 text-sm mt-0.5">--</p>
+                                <span class="text-xs sm:text-sm text-gray-500 block">맞지 않는 피곤한 동료</span>
+                                <p id="workWorst" class=" text-gray-600 text-sm mt-0.5">--</p>
                             </div>
                         </div>
                     </div>
@@ -319,10 +322,10 @@
             </div>
 
             <div class="flex flex-col sm:flex-row gap-3">
-                <button onclick="shareResult()" class="chii-btn flex-1 py-3 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-2xl flex items-center justify-center gap-2 text-lg">
+                <button onclick="shareResult()" class="chii-btn flex-1 py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-2xl flex items-center justify-center gap-2 text-lg">
                     <i class="fa-solid fa-share-nodes"></i> 결과 공유하기
                 </button>
-                <button onclick="resetAll()" class="chii-btn flex-1 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold rounded-2xl flex items-center justify-center gap-2 text-lg">
+                <button onclick="resetAll()" class="chii-btn flex-1 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-2xl flex items-center justify-center gap-2 text-lg">
                     <i class="fa-solid fa-rotate-right"></i> 다시 테스트하기
                 </button>
             </div>
@@ -330,7 +333,7 @@
 
     </main>
 
-    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full font-bold text-base opacity-0 pointer-events-none transition-all duration-300 z-50">
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full text-base opacity-0 pointer-events-none transition-all duration-300 z-50">
         결과 링크가 복사되었습니다!
     </div>
 
@@ -632,32 +635,21 @@
         }
 
         function submitQuiz() {
-            const counts = { wood: 0, fire: 0, earth: 0, metal: 0, water: 0 };
-            for (let i = 0; i < QUIZ_QUESTIONS.length; i++) {
-                const selected = document.querySelector(`input[name="quiz_q_${i}"]:checked`);
-                if (selected) counts[selected.value] += 1;
+            const scores = {};
+            Object.keys(CHARACTERS).forEach(k => { scores[k] = 0; });
+            const unanswered = [];
+            QUIZ_QUESTIONS.forEach((q, i) => {
+                const sel = document.querySelector(`input[name="quiz_q_${i}"]:checked`);
+                if (!sel) { unanswered.push(i + 1); return; }
+                q.options[parseInt(sel.value)].c.forEach(id => { scores[id] += 1; });
+            });
+            if (unanswered.length) {
+                alert(`아직 답하지 않은 질문이 있어요: ${unanswered.join(', ')}번`);
+                return;
             }
-
-            let maxCount = -1;
-            let dominantElem = 'water';
-            Object.keys(counts).forEach(k => {
-                if (counts[k] > maxCount) {
-                    maxCount = counts[k];
-                    dominantElem = k;
-                }
-            });
-
-            const matchedChar = matchCharacterWithClimate(dominantElem, 'bigeop');
-
-            renderSajuResult({
-                char: matchedChar,
-                dayStem: '甲',
-                dominantElem: dominantElem,
-                dominantTenGod: null,
-                counts: counts,
-                pillars: null,
-                hasHour: false
-            });
+            let best = null;
+            Object.keys(scores).forEach(k => { if (best === null || scores[k] > scores[best]) best = k; });
+            renderSajuResult({ quizMode: true, char: CHARACTERS[best] });
         }
 
         // 궁합 리포트: 캐릭터 이름으로 사진 찾아서 채우기
@@ -674,81 +666,86 @@
         }
 
         function renderSajuResult(data) {
+            const quiz = !!data.quizMode;
             const char = data.char;
-            const tenGod = data.dominantTenGod ? TEN_GODS_INFO[data.dominantTenGod] : null;
-            const elemName = ELEM_INFO[data.dominantElem].name;
-            const sajuTags = [`${elemName} 우세`];
-            if (tenGod) sajuTags.push(`${tenGod.name.split('(')[0]}발달`);
+            const tenGod = (!quiz && data.dominantTenGod) ? TEN_GODS_INFO[data.dominantTenGod] : null;
+            const toggle = (id, show) => document.getElementById(id).classList.toggle('hidden', !show);
+
+            // 심리 테스트는 캐릭터와 궁합 캐릭터만 노출
+            toggle('stemAndElementSummary', !quiz);
+            toggle('elemChartBox', !quiz);
+            toggle('sajuNoteBox', !quiz);
+            toggle('pillarsContainer', !quiz && !!data.pillars);
+            document.getElementById('resultTitle').textContent = quiz ? '🔮 심리 테스트 결과' : '🔮 정밀 사주 & 캐릭터 분석 결과';
+
+            const sajuTags = [];
+            if (!quiz) {
+                sajuTags.push(`${ELEM_INFO[data.dominantElem].name} 우세`);
+                if (tenGod) sajuTags.push(`${tenGod.name.split('(')[0]}발달`);
+            }
 
             document.getElementById('characterCard').innerHTML = `
-                <div class="inline-block px-3 py-1 bg-pink-200 text-pink-800 rounded-full text-xs sm:text-sm font-bold mb-3">
+                <div class="inline-block px-3 py-1 bg-pink-200 text-pink-800 rounded-full text-xs sm:text-sm mb-3">
                     나와 닮은 먼작귀 캐릭터
                 </div>
                 <div class="w-32 h-32 sm:w-40 sm:h-40 mx-auto mb-3 rounded-full bg-white p-2 border-4 border-pink-200 shadow-inner flex items-center justify-center overflow-hidden">
                     <img src="${char.img}" alt="${char.name}" referrerpolicy="no-referrer" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/160x160/fbcfe8/be185d?text=${encodeURIComponent(char.name)}'">
                 </div>
-                <h3 class="text-3xl sm:text-4xl font-black text-pink-600 font-gaegu mb-1">${char.name}</h3>
-                <p class="text-base sm:text-lg font-bold text-gray-600 mb-3">${char.title}</p>
+                <h3 class="text-3xl sm:text-4xl emph text-pink-600 font-gaegu mb-1">${char.name}</h3>
+                <p class="text-base sm:text-lg text-gray-600 mb-3">${char.title}</p>
                 <div class="flex flex-wrap justify-center gap-1.5 mb-4">
-                    ${sajuTags.map(t => `<span class="px-2.5 py-0.5 bg-amber-100 text-amber-700 font-bold rounded-md text-xs sm:text-sm">#${t}</span>`).join('')}
-                    ${char.traits.map(t => `<span class="px-2.5 py-0.5 bg-pink-100 text-pink-700 font-bold rounded-md text-xs sm:text-sm">#${t}</span>`).join('')}
+                    ${sajuTags.map(t => `<span class="px-2.5 py-0.5 bg-amber-100 text-amber-700 rounded-md text-xs sm:text-sm">#${t}</span>`).join('')}
+                    ${char.traits.map(t => `<span class="px-2.5 py-0.5 bg-pink-100 text-pink-700 rounded-md text-xs sm:text-sm">#${t}</span>`).join('')}
                 </div>
-                <p class="text-sm sm:text-base text-gray-700 leading-relaxed text-left bg-pink-50/60 p-4 rounded-2xl border border-pink-100 font-bold">
+                <p class="text-sm sm:text-base text-gray-700 leading-relaxed text-left bg-pink-50/60 p-4 rounded-2xl border border-pink-100">
                     ${char.desc}
                 </p>
             `;
 
-            document.getElementById('summaryDayMaster').textContent = data.dayStem ? `${data.dayStem}일간` : '분석 완료';
-            document.getElementById('summaryDayMasterDesc').textContent = (data.pillars && STEM_NAMES[data.dayStem]) || '개성 기운';
-            
-            document.getElementById('summaryTenGod').textContent = tenGod ? tenGod.name : '성향 테스트';
-            document.getElementById('summaryTenGodDesc').textContent = tenGod ? tenGod.title : '생년월일 입력 시 분석돼요';
+            if (!quiz) {
+                const elemName = ELEM_INFO[data.dominantElem].name;
+                document.getElementById('summaryDayMaster').textContent = `${data.dayStem}일간`;
+                document.getElementById('summaryDayMasterDesc').textContent = STEM_NAMES[data.dayStem] || '개성 기운';
+                document.getElementById('summaryTenGod').textContent = tenGod ? tenGod.name : '-';
+                document.getElementById('summaryTenGodDesc').textContent = tenGod ? tenGod.title : '';
+                document.getElementById('summaryDominantElem').textContent = elemName;
+                document.getElementById('summaryDominantElemDesc').textContent = ELEM_INFO[data.dominantElem].desc;
 
-            document.getElementById('summaryDominantElem').textContent = ELEM_INFO[data.dominantElem].name;
-            document.getElementById('summaryDominantElemDesc').textContent = ELEM_INFO[data.dominantElem].desc;
+                if (data.pillars) {
+                    document.getElementById('pillarHour').textContent = data.hasHour ? data.pillars.hour : '미정';
+                    document.getElementById('pillarDay').textContent = data.pillars.day;
+                    document.getElementById('pillarMonth').textContent = data.pillars.month;
+                    document.getElementById('pillarYear').textContent = data.pillars.year;
+                }
 
-            const pillarsCont = document.getElementById('pillarsContainer');
-            if (data.pillars) {
-                pillarsCont.classList.remove('hidden');
-                document.getElementById('pillarHour').textContent = data.hasHour ? data.pillars.hour : '미정';
-                document.getElementById('pillarDay').textContent = data.pillars.day;
-                document.getElementById('pillarMonth').textContent = data.pillars.month;
-                document.getElementById('pillarYear').textContent = data.pillars.year;
-            } else {
-                pillarsCont.classList.add('hidden');
-            }
+                const barsContainer = document.getElementById('elemBars');
+                barsContainer.innerHTML = '';
+                let total = 0;
+                Object.values(data.counts).forEach(v => total += v);
+                if (total === 0) total = 1;
+                Object.keys(ELEM_INFO).forEach(key => {
+                    const info = ELEM_INFO[key];
+                    const pct = Math.round(((data.counts[key] || 0) / total) * 100);
+                    const barRow = document.createElement('div');
+                    barRow.innerHTML = `
+                        <div class="flex justify-between text-xs text-gray-600 mb-1">
+                            <span>${info.name}</span>
+                            <span>${pct}%</span>
+                        </div>
+                        <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+                            <div class="${info.bg} h-full transition-all duration-500" style="width: ${pct}%"></div>
+                        </div>
+                    `;
+                    barsContainer.appendChild(barRow);
+                });
+                document.getElementById('dominantElemBadge').textContent = `메인 기운: ${elemName}`;
 
-            const barsContainer = document.getElementById('elemBars');
-            barsContainer.innerHTML = '';
-            let total = 0;
-            Object.values(data.counts).forEach(v => total += v);
-            if (total === 0) total = 1;
-
-            Object.keys(ELEM_INFO).forEach(key => {
-                const info = ELEM_INFO[key];
-                const count = data.counts[key] || 0;
-                const pct = Math.round((count / total) * 100);
-
-                const barRow = document.createElement('div');
-                barRow.innerHTML = `
-                    <div class="flex justify-between text-xs font-bold text-gray-600 mb-1">
-                        <span>${info.name}</span>
-                        <span>${pct}%</span>
-                    </div>
-                    <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
-                        <div class="${info.bg} h-full transition-all duration-500" style="width: ${pct}%"></div>
-                    </div>
+                document.getElementById('sajuNoteBox').innerHTML = `
+                    <p class="text-blue-900 text-base mb-1">✨ 나의 십성(十星) 및 사주 핵심 기운</p>
+                    ${tenGod ? `<p class="mb-2"><strong>[${tenGod.name}]</strong>: ${tenGod.desc}</p>` : ''}
+                    <p class="text-xs text-blue-800 bg-white/70 p-2.5 rounded-xl border border-blue-100">💡 <strong>사주 특징:</strong> ${elemName} 기운 우세 (${ELEM_INFO[data.dominantElem].desc})${tenGod ? ` / ${tenGod.name} 발달 (${tenGod.title})` : ''}</p>
                 `;
-                barsContainer.appendChild(barRow);
-            });
-
-            document.getElementById('dominantElemBadge').textContent = `메인 기운: ${ELEM_INFO[data.dominantElem].name}`;
-
-            document.getElementById('sajuNoteBox').innerHTML = `
-                <p class="text-blue-900 font-extrabold text-base mb-1">✨ 나의 십성(十星) 및 사주 핵심 기운</p>
-                ${tenGod ? `<p class="mb-2"><strong>[${tenGod.name}]</strong>: ${tenGod.desc}</p>` : ''}
-                <p class="text-xs text-blue-800 bg-white/70 p-2.5 rounded-xl border border-blue-100">💡 <strong>사주 특징:</strong> ${elemName} 기운 우세 (${ELEM_INFO[data.dominantElem].desc})${tenGod ? ` / ${tenGod.name} 발달 (${tenGod.title})` : ''}</p>
-            `;
+            }
 
             fillMatch('romanticBest', 'romanticBestImg', char.romanticBest);
             fillMatch('romanticWorst', 'romanticWorstImg', char.romanticWorst);
@@ -763,6 +760,153 @@
         /* ==========================================================================
            5. 1:1 COMPATIBILITY CALCULATION
            ========================================================================== */
+        /* ---- 궁합 분석용 표 ---- */
+        const STEM_KO = {'甲':'갑','乙':'을','丙':'병','丁':'정','戊':'무','己':'기','庚':'경','辛':'신','壬':'임','癸':'계'};
+        const BRANCH_KO = {'子':'자','丑':'축','寅':'인','卯':'묘','辰':'진','巳':'사','午':'오','未':'미','申':'신','酉':'유','戌':'술','亥':'해'};
+        const ELEM_GEN = { wood: 'fire', fire: 'earth', earth: 'metal', metal: 'water', water: 'wood' };
+        const STEM_CLASH = { '甲庚': '갑경충', '乙辛': '을신충', '丙壬': '병임충', '丁癸': '정계충' };
+        const BRANCH_PA = { '子酉': '자유파', '丑辰': '축진파', '寅亥': '인해파', '卯午': '묘오파', '巳申': '사신파', '戌未': '술미파' };
+        const BRANCH_HAE = { '子未': '자미해', '丑午': '축오해', '寅巳': '인사해', '卯辰': '묘진해', '申亥': '신해해', '酉戌': '유술해' };
+        const BRANCH_HYEONG = { '寅巳': '인사형', '巳申': '사신형', '寅申': '인신형', '丑戌': '축술형', '戌未': '술미형', '丑未': '축미형', '子卯': '자묘형' };
+        const SAMHAP_GROUPS = [
+            { b: '申子辰', n: '신자진 수(水)국' }, { b: '寅午戌', n: '인오술 화(火)국' },
+            { b: '巳酉丑', n: '사유축 금(金)국' }, { b: '亥卯未', n: '해묘미 목(木)국' }
+        ];
+        const JAHYEONG = '辰午酉亥';
+        const stripHanja = str => str.replace(/\(.*?\)/g, '');
+        const ganzhiKo = gz => STEM_KO[gz.charAt(0)] + BRANCH_KO[gz.charAt(1)];
+
+        function branchRelations(a, b) {
+            const k1 = a + b, k2 = b + a, out = [];
+            const get = t => t[k1] || t[k2];
+            const hap = get(BRANCH_COMBINATIONS);
+            if (hap) out.push({ t: 'hap', n: hap });
+            const sam = SAMHAP_GROUPS.find(g => a !== b && g.b.includes(a) && g.b.includes(b));
+            if (sam) out.push({ t: 'banhap', n: sam.n + ' 반합' });
+            if (get(BRANCH_CLASHES)) out.push({ t: 'chung', n: get(BRANCH_CLASHES) });
+            if (get(BRANCH_WONJIN)) out.push({ t: 'wonjin', n: get(BRANCH_WONJIN) });
+            if (!hap && get(BRANCH_PA)) out.push({ t: 'pa', n: get(BRANCH_PA) });
+            if (!get(BRANCH_WONJIN) && get(BRANCH_HAE)) out.push({ t: 'hae', n: get(BRANCH_HAE) });
+            if (!hap && !get(BRANCH_CLASHES) && get(BRANCH_HYEONG)) out.push({ t: 'hyeong', n: get(BRANCH_HYEONG) });
+            if (a === b && JAHYEONG.includes(a)) out.push({ t: 'jahyeong', n: BRANCH_KO[a] + BRANCH_KO[a] + ' 자형' });
+            return out;
+        }
+
+        const REL_SCORE = { hap: 12, banhap: 6, chung: -12, wonjin: -8, pa: -6, hae: -5, hyeong: -7, jahyeong: -4 };
+        const REL_TEXT = {
+            hap: '겉으로 보이는 성격보다 속마음과 생활 리듬이 서로 끌어당기는 합이에요. 같이 있으면 이유 없이 마음이 편하고, 서로 자연스럽게 의지하게 돼요.',
+            banhap: '같은 기운으로 모이려는 힘이 있어서 취향과 목표가 비슷한 방향으로 흘러요. 함께 무언가를 도모할 때 시너지가 나요.',
+            chung: '서로의 방식이 정면으로 부딪히는 충이에요. 생활 습관이나 감정 표현이 정반대라서 사소한 일에서도 크게 다투기 쉬워요. 다만 뒤끝은 짧은 편이니, 화가 났을 때는 바로 몰아붙이지 말고 하룻밤 식힌 뒤 대화해 보세요.',
+            wonjin: '큰 싸움은 없는데도 이유 없이 서운하고 미운 마음이 쌓이는 원진이에요. 속으로 삭이면 거리가 점점 벌어지니, 서운함은 그때그때 부드럽게 말로 풀어 주세요.',
+            pa: '잘 풀리던 일도 사소한 변수로 어긋나기 쉬운 파예요. 약속이나 계획이 틀어질 수 있으니 중요한 일정은 미리 서로 확인해 두면 좋아요.',
+            hae: '서로를 위해 한 행동이 엉뚱한 오해로 이어지기 쉬운 해예요. 호의가 상처가 되지 않도록 의도를 먼저 설명해 주세요.',
+            hyeong: '가까워질수록 서로의 방식에 간섭하거나 날카로운 말이 오가기 쉬운 형이에요. 선을 지켜 주고 존중하면 오히려 서로를 단단하게 만들어 줘요.',
+            jahyeong: '같은 글자가 겹쳐 서로 닮은 단점이 함께 커지는 자형이에요. 한 번 꼬이면 헤어나기 어려우니 각자 혼자만의 시간을 갖는 게 좋아요.'
+        };
+
+        // 조후(한난조습) 점수: 오행 분포 + 태어난 계절
+        function sajuTemp(r) {
+            const c = r.counts;
+            const t = Object.values(c).reduce((a, b) => a + b, 0) || 1;
+            const mb = r.pillars.month.charAt(1);
+            const season = '巳午未'.includes(mb) ? 0.25 : '亥子丑'.includes(mb) ? -0.25 : '寅卯辰'.includes(mb) ? 0.05 : -0.05;
+            return (c.fire - c.water + 0.3 * (c.wood - c.metal)) / t + season;
+        }
+
+        function analyzeCompat(A, B) {
+            let score = 70;
+            const good = [], bad = [];
+            const dsA = A.dayStem, dsB = B.dayStem;
+            const eA = STEM_ELEMENTS[dsA], eB = STEM_ELEMENTS[dsB];
+            const en = e => ELEM_INFO[e].name;
+
+            // 1) 일간(나 자신)끼리의 관계
+            const stemHap = STEM_COMBINATIONS[dsA + dsB] || STEM_COMBINATIONS[dsB + dsA];
+            const stemClash = STEM_CLASH[dsA + dsB] || STEM_CLASH[dsB + dsA];
+            if (stemHap) {
+                score += 12;
+                good.push({ t: `일간 ${stripHanja(stemHap)}`, d: '두 사람의 일간이 합을 이루는 운명적인 조합이에요. 처음부터 서로에게 끌리고 생각이 잘 통하며, 한쪽의 부족한 부분을 다른 쪽이 은근히 채워 줘요.' });
+            } else if (stemClash) {
+                score -= 8;
+                bad.push({ t: `일간 ${stemClash}`, d: '두 사람의 일간이 정면으로 부딪히는 천간충이에요. 자존심과 주관이 강하게 맞서서 서로 양보하기가 어렵고, 의견이 갈리면 팽팽하게 대립하기 쉬워요. 이기려 하기보다 "누가 맞냐"를 내려놓는 것이 핵심이에요.' });
+            } else if (eA === eB) {
+                score += 3;
+                good.push({ t: `일간 비화: 같은 ${en(eA)}`, d: '일간의 오행이 같아서 가치관과 말투, 행동 패턴이 닮았어요. 공감은 빠르지만 같은 약점도 닮아 있으니 서로의 단점을 지적할 땐 조심스럽게 해 주세요.' });
+            } else if (ELEM_GEN[eA] === eB) {
+                score += 6;
+                good.push({ t: `일간 상생: 나의 ${en(eA)} → 상대의 ${en(eB)}`, d: '나의 기운이 상대를 북돋아 주는 흐름이에요. 나는 자연스럽게 상대를 챙기게 되고 상대는 힘을 얻어요. 주는 쪽이 지치지 않도록 고마움을 자주 표현해 주세요.' });
+            } else if (ELEM_GEN[eB] === eA) {
+                score += 6;
+                good.push({ t: `일간 상생: 상대의 ${en(eB)} → 나의 ${en(eA)}`, d: '상대의 기운이 나를 북돋아 주는 흐름이에요. 상대가 나를 자연스럽게 챙겨 주고 나는 힘을 얻어요. 받기만 하지 말고 나도 마음을 돌려주면 관계가 더 단단해져요.' });
+            } else {
+                score -= 4;
+                bad.push({ t: `일간 상극: ${en(eA)}와 ${en(eB)}`, d: '한쪽의 기운이 다른 쪽을 누르는 구도예요. 누르는 쪽은 조언이라고 생각해도 받는 쪽은 간섭이나 지적으로 느낄 수 있으니 말투를 부드럽게 해 주세요.' });
+            }
+
+            // 2) 지지 관계 (일지가 가장 중요, 월지는 가중치 절반)
+            const ctxs = [
+                { w: 1, a: A.pillars.day.charAt(1), b: B.pillars.day.charAt(1), where: '일지·속마음과 생활 습관', all: true },
+                { w: 0.5, a: A.pillars.month.charAt(1), b: B.pillars.month.charAt(1), where: '월지·사회적 성향', all: false },
+                { w: 0.5, a: A.pillars.day.charAt(1), b: B.pillars.month.charAt(1), where: '나의 일지×상대의 월지', all: false },
+                { w: 0.5, a: B.pillars.day.charAt(1), b: A.pillars.month.charAt(1), where: '상대의 일지×나의 월지', all: false }
+            ];
+            ctxs.forEach(c => {
+                branchRelations(c.a, c.b).forEach(r => {
+                    if (!c.all && !['hap', 'chung', 'wonjin'].includes(r.t)) return;
+                    score += REL_SCORE[r.t] * c.w;
+                    const item = { t: `${c.where} ${r.n}${c.w < 1 ? ' (영향 약함)' : ''}`, d: REL_TEXT[r.t] };
+                    (REL_SCORE[r.t] > 0 ? good : bad).push(item);
+                });
+            });
+
+            // 3) 조후 (한난 조화)
+            const tA = sajuTemp(A), tB = sajuTemp(B);
+            const lv = t => t >= 0.18 ? 'hot' : t <= -0.18 ? 'cold' : 'mild';
+            const la = lv(tA), lb = lv(tB);
+            const L = { hot: '뜨겁고 건조한', cold: '차갑고 습한', mild: '온도가 적당한' };
+            if ((la === 'hot' && lb === 'cold') || (la === 'cold' && lb === 'hot')) {
+                score += 8;
+                good.push({ t: '조후 보완: 한난 조화', d: `나는 ${L[la]} 사주, 상대는 ${L[lb]} 사주예요. 뜨거운 쪽의 열기는 차가운 쪽이 식혀 주고, 차가운 쪽은 따뜻한 기운으로 데워 주는 이상적인 온도 균형이에요.` });
+            } else if (la === lb && la === 'hot') {
+                score -= 6;
+                bad.push({ t: '조후 쏠림: 둘 다 뜨거운 사주', d: '둘 다 열기가 강해서 감정이 쉽게 달아오르고 작은 말다툼도 크게 번질 수 있어요. 한 사람이 뜨거워질 땐 다른 사람이 한 템포 식혀 주세요.' });
+            } else if (la === lb && la === 'cold') {
+                score -= 6;
+                bad.push({ t: '조후 쏠림: 둘 다 차가운 사주', d: '둘 다 차가운 기운이 강해서 마음속 말을 꺼내지 않다가 관계가 서서히 식기 쉬워요. 다정한 표현과 따뜻한 활동을 의식적으로 늘려 보세요.' });
+            } else if (la === 'mild' && lb === 'mild') {
+                score += 4;
+                good.push({ t: '조후 안정: 둘 다 온화한 사주', d: '두 사람 모두 온도가 적당해서 감정의 기복이 크지 않고 편안한 관계를 오래 이어 가기 좋아요.' });
+            } else {
+                score += 2;
+                good.push({ t: '조후 균형', d: '한 사람의 사주가 한쪽으로 치우쳐 있지만 상대가 온화해서 균형을 잡아 줘요.' });
+            }
+
+            // 4) 오행 보완 (부족한 오행을 상대가 채워 줌)
+            const ratios = r => {
+                const t = Object.values(r.counts).reduce((a, b) => a + b, 0) || 1;
+                const o = {};
+                Object.keys(r.counts).forEach(k => { o[k] = r.counts[k] / t; });
+                return o;
+            };
+            const rA = ratios(A), rB = ratios(B);
+            let supplied = 0;
+            const supply = (needy, giver, who) => {
+                Object.keys(ELEM_INFO).forEach(k => {
+                    if (needy[k] < 0.08 && giver[k] >= 0.22 && supplied < 3) {
+                        supplied++;
+                        score += 3;
+                        const [me, you] = who === 'me' ? ['나의', '상대가'] : ['상대의', '내가'];
+                        good.push({ t: `오행 보완: ${en(k)}`, d: `${me} 사주에는 ${en(k)} 기운(${ELEM_INFO[k].desc})이 거의 없는데 ${you} 이 기운을 넉넉하게 가지고 있어요. 함께하면 부족했던 부분이 자연스럽게 채워져요.` });
+                    }
+                });
+            };
+            supply(rA, rB, 'me');
+            supply(rB, rA, 'you');
+
+            score = Math.round(Math.min(Math.max(score, 45), 98));
+            return { score, good, bad };
+        }
+
         function calculateSajuCompat(e) {
             e.preventDefault();
 
@@ -772,101 +916,75 @@
                 const d = parseInt(document.getElementById(dId).value);
                 const h = parseInt(document.getElementById(hId).value);
                 const isLunar = document.querySelector(`input[name="${calName}"]:checked`).value === 'lunar';
-
                 const solar = isLunar
                     ? Lunar.fromYmdHms(y, m, d, h >= 0 ? h : 12, 0, 0).getSolar()
                     : Solar.fromYmdHms(y, m, d, h >= 0 ? h : 12, 0, 0);
-
-                const eight = solar.getLunar().getEightChar();
-                const r = analyzeSaju(solar, h >= 0);
-                return {
-                    dayStem: eight.getDay().charAt(0),
-                    dayBranch: eight.getDay().charAt(1),
-                    dayGanzhi: eight.getDay(),
-                    char: r.char
-                };
+                return analyzeSaju(solar, h >= 0);
             };
 
-            let p1, p2;
+            let A, B;
             try {
-                p1 = parseDate('compatYear1', 'compatMonth1', 'compatDay1', 'compatHour1', 'compatCal1');
-                p2 = parseDate('compatYear2', 'compatMonth2', 'compatDay2', 'compatHour2', 'compatCal2');
+                A = parseDate('compatYear1', 'compatMonth1', 'compatDay1', 'compatHour1', 'compatCal1');
+                B = parseDate('compatYear2', 'compatMonth2', 'compatDay2', 'compatHour2', 'compatCal2');
             } catch (err) {
                 alert('올바른 생년월일을 선택해주세요.');
                 return;
             }
 
-            const c1 = p1.char;
-            const c2 = p2.char;
-
-            let score = 78;
-            let details = [];
-
-            const stemPair1 = p1.dayStem + p2.dayStem;
-            const stemPair2 = p2.dayStem + p1.dayStem;
-            if (STEM_COMBINATIONS[stemPair1] || STEM_COMBINATIONS[stemPair2]) {
-                score += 12;
-                details.push(`✨ <strong>천간합(${STEM_COMBINATIONS[stemPair1] || STEM_COMBINATIONS[stemPair2]})</strong>: 서로 첫눈에 끌리고 생각이 잘 통하는 운명적 결합입니다.`);
-            }
-
-            const branchPair1 = p1.dayBranch + p2.dayBranch;
-            const branchPair2 = p2.dayBranch + p1.dayBranch;
-            if (BRANCH_COMBINATIONS[branchPair1] || BRANCH_COMBINATIONS[branchPair2]) {
-                score += 10;
-                details.push(`💕 <strong>일지 육합(${BRANCH_COMBINATIONS[branchPair1] || BRANCH_COMBINATIONS[branchPair2]})</strong>: 속마음과 성격이 잘 맞아 함께 있으면 마음이 편안합니다.`);
-            }
-
-            if (BRANCH_CLASHES[branchPair1] || BRANCH_CLASHES[branchPair2]) {
-                score -= 8;
-                details.push(`⚡ <strong>일지 충(${BRANCH_CLASHES[branchPair1] || BRANCH_CLASHES[branchPair2]})</strong>: 가치관 차이로 가끔 의견 충돌이 일어날 수 있으니 대화가 필요합니다.`);
-            }
-
-            if (BRANCH_WONJIN[branchPair1] || BRANCH_WONJIN[branchPair2]) {
-                score -= 6;
-                details.push(`🥀 <strong>원진 조화</strong>: 작은 서운함이 축적될 수 있으니 솔직하고 따뜻한 표현이 중요합니다.`);
-            }
-
-            score = Math.min(Math.max(score, 55), 99);
+            const c1 = A.char, c2 = B.char;
+            const { score, good, bad } = analyzeCompat(A, B);
+            const verdict = score >= 90 ? '천생연분이에요!' : score >= 80 ? '아주 잘 맞는 사이예요' : score >= 70 ? '좋은 궁합이에요' : score >= 60 ? '맞춰 가면 좋아지는 사이예요' : '서로 많이 배려해야 하는 사이예요';
+            const itemHtml = (list, box) => list.map(i => `
+                <div class="${box} p-3 rounded-xl border">
+                    <p class="text-sm sm:text-base"><strong>${i.t}</strong></p>
+                    <p class="text-sm mt-1 leading-relaxed">${i.d}</p>
+                </div>`).join('');
+            const dayInfo = r => `${ganzhiKo(r.pillars.day)}일주 · ${stripHanja(STEM_NAMES[r.dayStem])} 일간`;
 
             const display = document.getElementById('compatResultDisplay');
             display.classList.remove('hidden');
-
             display.innerHTML = `
                 <div class="text-center mb-4">
-                    <span class="inline-block px-3 py-1 bg-purple-200 text-purple-800 rounded-full font-bold text-xs sm:text-sm mb-2">정밀 만세력 사주 궁합 리포트</span>
-                    <h3 class="text-3xl font-black text-purple-700 font-gaegu">${c1.name} X ${c2.name}</h3>
+                    <span class="inline-block px-3 py-1 bg-purple-200 text-purple-800 rounded-full text-xs sm:text-sm mb-2">정밀 만세력 사주 궁합 리포트</span>
+                    <h3 class="text-3xl emph text-purple-700 font-gaegu">${c1.name} X ${c2.name}</h3>
                 </div>
 
-                <div class="flex items-center justify-center gap-6 text-center mb-5">
+                <div class="flex items-center justify-center gap-4 sm:gap-6 text-center mb-5">
                     <div class="flex flex-col items-center">
                         <div class="w-20 h-20 rounded-full bg-white p-1 border-2 border-pink-300 shadow-md mb-1 flex items-center justify-center overflow-hidden">
                             <img src="${c1.img}" alt="${c1.name}" referrerpolicy="no-referrer" class="w-16 h-16 object-contain" onerror="this.src='https://placehold.co/80x80/fbcfe8/be185d?text=${encodeURIComponent(c1.name)}'">
                         </div>
-                        <p class="font-extrabold text-base text-gray-800">${c1.name}</p>
-                        <span class="text-xs text-purple-600 font-bold">${p1.dayGanzhi}일주</span>
+                        <p class="text-base text-gray-800">${c1.name}</p>
+                        <span class="text-xs text-purple-600">나 · ${dayInfo(A)}</span>
                     </div>
 
-                    <div class="text-pink-500 font-black text-3xl font-gaegu flex flex-col items-center">
+                    <div class="text-pink-500 text-3xl font-gaegu flex flex-col items-center">
                         <span>💕</span>
-                        <span class="text-2xl text-purple-700">${score}점</span>
+                        <span class="text-3xl emph text-purple-700">${score}점</span>
                     </div>
 
                     <div class="flex flex-col items-center">
                         <div class="w-20 h-20 rounded-full bg-white p-1 border-2 border-purple-300 shadow-md mb-1 flex items-center justify-center overflow-hidden">
                             <img src="${c2.img}" alt="${c2.name}" referrerpolicy="no-referrer" class="w-16 h-16 object-contain" onerror="this.src='https://placehold.co/80x80/e9d5ff/6b21a8?text=${encodeURIComponent(c2.name)}'">
                         </div>
-                        <p class="font-extrabold text-base text-gray-800">${c2.name}</p>
-                        <span class="text-xs text-purple-600 font-bold">${p2.dayGanzhi}일주</span>
+                        <p class="text-base text-gray-800">${c2.name}</p>
+                        <span class="text-xs text-purple-600">상대 · ${dayInfo(B)}</span>
                     </div>
                 </div>
 
-                <div class="bg-white p-4 rounded-2xl border border-purple-200 space-y-2 text-sm sm:text-base text-gray-700 leading-relaxed font-bold">
-                    <h4 class="text-base text-purple-800 border-b border-purple-100 pb-1 mb-2 flex items-center gap-1 font-gaegu text-xl">
-                        <i class="fa-solid fa-scroll text-purple-500"></i> 사주 상생 및 조후 분석 결과
-                    </h4>
-                    ${details.length > 0 ? details.map(d => `<p class="bg-purple-50/60 p-2.5 rounded-xl border border-purple-100">${d}</p>`).join('') : '<p class="bg-purple-50/60 p-2.5 rounded-xl">서로 평탄하고 안정적인 기운을 나누는 조화로운 사주 궁합입니다.</p>'}
+                <p class="text-center text-lg text-purple-800 mb-4">${verdict}</p>
+
+                <div class="space-y-2 mb-4">
+                    <h4 class="text-xl text-emerald-700 font-gaegu border-b border-emerald-200 pb-1">💚 잘 맞는 부분 (${good.length})</h4>
+                    ${good.length ? itemHtml(good, 'bg-emerald-50 border-emerald-200 text-emerald-900') : '<p class="text-sm text-gray-600 p-2">두드러지는 합이나 보완은 없지만 크게 부딪히는 부분도 없는 평탄한 관계예요.</p>'}
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="text-xl text-rose-700 font-gaegu border-b border-rose-200 pb-1">⚠️ 조심할 부분 (${bad.length})</h4>
+                    ${bad.length ? itemHtml(bad, 'bg-rose-50 border-rose-200 text-rose-900') : '<p class="text-sm text-gray-600 p-2">충이나 원진 같은 부딪힘이 없어서 큰 갈등 요소가 적은 사이예요.</p>'}
                 </div>
             `;
+            fitButtons();
         }
 
         /* ==========================================================================
@@ -882,18 +1000,18 @@
             const btnC = document.getElementById('navCompatBtn');
 
             [btnS, btnQ, btnC].forEach(b => {
-                b.className = "px-4 sm:px-5 py-2 rounded-full font-bold text-sm sm:text-base transition-all duration-300 text-pink-700 hover:bg-pink-200";
+                b.className = "px-4 sm:px-5 py-2 rounded-full text-sm sm:text-base transition-all duration-300 text-pink-700 hover:bg-pink-200";
             });
 
             if (tab === 'saju') {
                 document.getElementById('sajuSection').classList.remove('hidden');
-                btnS.className = "px-4 sm:px-5 py-2 rounded-full font-bold text-sm sm:text-base transition-all duration-300 bg-pink-500 text-white shadow-md";
+                btnS.className = "px-4 sm:px-5 py-2 rounded-full text-sm sm:text-base transition-all duration-300 bg-pink-500 text-white shadow-md";
             } else if (tab === 'quiz') {
                 document.getElementById('quizSection').classList.remove('hidden');
-                btnQ.className = "px-4 sm:px-5 py-2 rounded-full font-bold text-sm sm:text-base transition-all duration-300 bg-amber-500 text-white shadow-md";
+                btnQ.className = "px-4 sm:px-5 py-2 rounded-full text-sm sm:text-base transition-all duration-300 bg-amber-500 text-white shadow-md";
             } else if (tab === 'compat') {
                 document.getElementById('compatSection').classList.remove('hidden');
-                btnC.className = "px-4 sm:px-5 py-2 rounded-full font-bold text-sm sm:text-base transition-all duration-300 bg-purple-500 text-white shadow-md";
+                btnC.className = "px-4 sm:px-5 py-2 rounded-full text-sm sm:text-base transition-all duration-300 bg-purple-500 text-white shadow-md";
             }
             fitButtons();
         }
@@ -937,36 +1055,79 @@
            7. INITIALIZATION HELPERS & QUIZ DATA
            ========================================================================== */
         const QUIZ_QUESTIONS = [
-            {
-                q: "1. 주말에 쉬는 시간에 주로 무엇을 하나요?",
-                options: [
-                    { text: "새로운 학문이나 자격증 공부를 하거나 책을 읽는다.", val: "fire" },
-                    { text: "맛있는 음식을 해먹거나 편안히 휴식을 취한다.", val: "earth" },
-                    { text: "친구들과 수다를 떨거나 감성적인 음악/그림을 즐긴다.", val: "water" },
-                    { text: "아무 계획 없이 즉흥적으로 야외로 떠난다.", val: "wood" },
-                    { text: "운동을 하거나 스스로 세운 목표를 달성한다.", val: "metal" }
-                ]
-            },
-            {
-                q: "2. 친구가 고민을 털어놓을 때 나는?",
-                options: [
-                    { text: "따뜻하게 공감해주고 함께 눈물을 흘려준다.", val: "water" },
-                    { text: "현실적이고 명확한 해결책을 즉시 제시해준다.", val: "metal" },
-                    { text: "맛있는 걸 사주면서 기분을 풀게 해준다.", val: "earth" },
-                    { text: "열정적으로 같이 화내주며 응원해준다.", val: "fire" },
-                    { text: "별일 아니라는 듯 쿨하게 딴길로 유도해 웃겨준다.", val: "wood" }
-                ]
-            },
-            {
-                q: "3. 내가 가장 중요하게 생각하는 삶의 가치는?",
-                options: [
-                    { text: "자유와 주체적인 나만의 삶", val: "wood" },
-                    { text: "감성과 다정한 인간관계", val: "water" },
-                    { text: "안정과 포근한 평화", val: "earth" },
-                    { text: "원칙, 명예, 그리고 자기계발", val: "metal" },
-                    { text: "열정과 솔직한 자기표현", val: "fire" }
-                ]
-            }
+            { q: "1. 쉬는 주말, 나는 주로?", options: [
+                { text: "계획표대로 공부나 자기계발을 한다.", c: ['shisa', 'rakko'] },
+                { text: "맛있는 걸 먹으며 집에서 뒹굴뒹굴한다.", c: ['kurimanju', 'chiikawa'] },
+                { text: "친구들을 만나 수다를 떨며 논다.", c: ['hachiware', 'momonga'] },
+                { text: "갑자기 떠오른 곳으로 즉흥 여행을 떠난다.", c: ['usagi'] },
+                { text: "누군가를 챙기거나 선물을 준비한다.", c: ['kani', 'chiikawa'] }
+            ]},
+            { q: "2. 친구가 고민을 털어놓을 때 나는?", options: [
+                { text: "같이 울어주며 따뜻하게 공감한다.", c: ['hachiware', 'chiikawa'] },
+                { text: "현실적이고 명확한 해결책을 바로 알려준다.", c: ['rakko', 'shisa'] },
+                { text: "맛있는 걸 사주며 기분을 풀어준다.", c: ['kurimanju', 'kani'] },
+                { text: "웃긴 얘기로 분위기를 확 바꿔준다.", c: ['usagi', 'momonga'] },
+                { text: "조용히 곁에서 끝까지 들어준다.", c: ['kani', 'kurimanju'] }
+            ]},
+            { q: "3. 처음 보는 사람들이 모인 자리에서 나는?", options: [
+                { text: "먼저 말을 걸며 분위기를 띄운다.", c: ['hachiware', 'momonga'] },
+                { text: "구석에서 눈치를 보며 얌전히 있는다.", c: ['chiikawa'] },
+                { text: "편한 자리를 잡고 음식부터 챙긴다.", c: ['kurimanju'] },
+                { text: "지루하면 내 페이스대로 자리를 뜬다.", c: ['usagi'] },
+                { text: "다들 불편하지 않은지 주변을 살핀다.", c: ['kani', 'shisa'] },
+                { text: "말수는 적지만 필요할 땐 중심을 잡는다.", c: ['rakko'] }
+            ]},
+            { q: "4. 큰 실수를 했을 때 나는?", options: [
+                { text: "눈물이 나지만 다시 도전한다.", c: ['chiikawa'] },
+                { text: "원인을 분석하고 재발 방지책을 세운다.", c: ['shisa', 'rakko'] },
+                { text: "일단 웃고 넘기고 본다.", c: ['usagi', 'hachiware'] },
+                { text: "관심받고 싶어서 귀엽게 징징댄다.", c: ['momonga'] },
+                { text: "맛있는 걸 먹고 푹 자면 잊는다.", c: ['kurimanju', 'kani'] }
+            ]},
+            { q: "5. 하나만 가질 수 있다면?", options: [
+                { text: "어떤 일도 해결하는 압도적인 실력", c: ['rakko', 'usagi'] },
+                { text: "모두에게 사랑받는 매력", c: ['momonga', 'hachiware'] },
+                { text: "노력으로 쌓은 자격증과 성과", c: ['shisa', 'chiikawa'] },
+                { text: "지치지 않는 따뜻한 마음", c: ['kani'] },
+                { text: "여유로운 일상과 나만의 맛집 지도", c: ['kurimanju'] }
+            ]},
+            { q: "6. 갑자기 약속이 취소됐다!", options: [
+                { text: "오히려 좋아! 혼자 즉흥 일정을 짠다.", c: ['usagi'] },
+                { text: "서운하지만 괜찮다고 말한다.", c: ['chiikawa', 'kani'] },
+                { text: "관심받고 싶어서 투덜대며 연락한다.", c: ['momonga'] },
+                { text: "남는 시간에 공부나 정리를 한다.", c: ['shisa'] },
+                { text: "느긋하게 쉬면서 맛있는 걸 시킨다.", c: ['kurimanju'] },
+                { text: "단호하게 새 일정을 바로 잡는다.", c: ['rakko', 'hachiware'] }
+            ]},
+            { q: "7. 가장 편안한 공간은?", options: [
+                { text: "사람들로 북적북적한 활기찬 곳", c: ['hachiware', 'momonga'] },
+                { text: "조용하고 깔끔하게 정돈된 곳", c: ['shisa', 'rakko'] },
+                { text: "아늑한 식당이나 카페", c: ['kurimanju', 'kani'] },
+                { text: "탁 트인 야외", c: ['usagi'] },
+                { text: "포근한 우리 집", c: ['chiikawa'] }
+            ]},
+            { q: "8. 팀 프로젝트에서 나의 역할은?", options: [
+                { text: "계획을 짜고 진행을 관리한다.", c: ['shisa'] },
+                { text: "앞장서서 팀을 이끈다.", c: ['rakko'] },
+                { text: "분위기 메이커를 맡는다.", c: ['hachiware', 'momonga'] },
+                { text: "묵묵히 맡은 일을 끝까지 해낸다.", c: ['chiikawa', 'kurimanju'] },
+                { text: "팀원들의 상태를 살피며 뒷받침한다.", c: ['kani'] },
+                { text: "아무도 생각 못한 방식으로 해결한다.", c: ['usagi'] }
+            ]},
+            { q: "9. 스트레스를 푸는 나만의 방법은?", options: [
+                { text: "운동이나 훈련으로 땀을 쭉 뺀다.", c: ['rakko', 'shisa'] },
+                { text: "달콤한 디저트나 맛집을 찾아간다.", c: ['kurimanju', 'rakko'] },
+                { text: "친구와 밤새 수다를 떤다.", c: ['hachiware'] },
+                { text: "훌쩍 떠나거나 신나게 뛰어논다.", c: ['usagi'] },
+                { text: "귀여운 것들을 보며 위로받는다.", c: ['chiikawa', 'kani', 'momonga'] }
+            ]},
+            { q: "10. 친구들이 나를 부르는 말은?", options: [
+                { text: "믿음직한 리더", c: ['rakko', 'shisa'] },
+                { text: "분위기 메이커", c: ['hachiware', 'momonga'] },
+                { text: "순수하고 귀여운 막내", c: ['chiikawa', 'momonga'] },
+                { text: "마음 편한 힐러", c: ['kani', 'kurimanju'] },
+                { text: "예측불가 천재", c: ['usagi'] }
+            ]}
         ];
 
         const STEM_COMBINATIONS = {
@@ -1051,14 +1212,14 @@
                 qCard.className = 'bg-amber-50/80 p-4 rounded-2xl border border-amber-200';
                 
                 let optionsHtml = q.options.map((opt, oIdx) => `
-                    <label class="flex items-center gap-2 p-2.5 bg-white rounded-xl border border-amber-100 hover:bg-amber-100/50 cursor-pointer text-sm sm:text-base font-bold text-gray-700 transition-all">
-                        <input type="radio" name="quiz_q_${idx}" value="${opt.val}" ${oIdx === 0 ? 'checked' : ''} class="accent-amber-500">
+                    <label class="flex items-center gap-2 p-2.5 bg-white rounded-xl border border-amber-100 hover:bg-amber-100/50 cursor-pointer text-sm sm:text-base text-gray-700 transition-all">
+                        <input type="radio" name="quiz_q_${idx}" value="${oIdx}" class="accent-amber-500">
                         ${opt.text}
                     </label>
                 `).join('');
 
                 qCard.innerHTML = `
-                    <h3 class="font-extrabold text-amber-800 text-base sm:text-lg mb-3">${q.q}</h3>
+                    <h3 class=" text-amber-800 text-base sm:text-lg mb-3">${q.q}</h3>
                     <div class="space-y-2">${optionsHtml}</div>
                 `;
                 container.appendChild(qCard);
